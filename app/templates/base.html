@@ -102,19 +102,19 @@
     </div>
     <div class="turnier-links">
         <br><br> <b>Turnier:</b>
-        <a href=#>Neu</a>
-        <a href=#>Laufend</a>
-        <a href=#>Archiv</a>
+        <a href="{{ url_for("turnier_add") }}">Neu</a>
+        <a href="{{ url_for("turnier_current") }}">Laufend</a>
+        <a href="{{ url_for("turnier_all") }}">Archiv</a>
     </div>
     <div class="teilnehmer-links">
         <br><br> <b>Teilnehmer:</b>
-        <a href=#>Übersicht</a>
-        <a href=#>Neu</a>
+        <a href="{{ url_for("teilnehmer_all") }}">Übersicht</a>
+        <a href="{{ url_for("teilnehmer_add") }}">Neu</a>
     </div>
     <div class="spiele-links">
         <br><br> <b>Spiele:</b>
-        <a href=#>Übersicht</a>
-        <a href=#>Neu</a>
+        <a href="{{ url_for("spiele_all") }}">Übersicht</a>
+        <a href="{{ url_for("spiele_add") }}">Neu</a>
     </div>
 </div>
  
@@ -122,5 +122,16 @@
     {% block app_content %}{% endblock %}
  </div>
  
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
 </body>
 </html>
