@@ -19,8 +19,8 @@
         .navbar input {
             display: none;
         }
-         
-        .navbar label{
+
+        .navbar label, a{
           color: #f2f2f2;
           text-align: center;
           padding: 20px 16px;
@@ -28,7 +28,7 @@
           font-size: 17px;
         }
          
-        .navbar label:hover{
+        .navbar label:hover, a:hover{
             padding: 20px 16px;
             background-color: #ddd;
             color: black;
@@ -90,8 +90,7 @@
 </div>
  
 <div id="navbar" class="navbar">
-    <input type="checkbox" id="startseite">
-    <label for="startseite">Startseite</label>
+    <a href="{{ url_for("index") }}">Startseite</a>
     <input type="checkbox" id="turnier">
     <label for="turnier">Turnier</label>
     <input type="checkbox" id="teilnehmer">

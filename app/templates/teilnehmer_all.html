@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block app_content %}
+
+    <h1>Alle Spieler</h1>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Nickname</th>
+            <th>Wins</th>
+        </tr>
+    {% for teilnehmer in alle_teilnehmer %}
+        <tr>
+            <td>{{ teilnehmer[0] }}</td>
+            <td>{{ teilnehmer[1] }}</td>
+            <td>0</td>
+        </tr>
+    {% endfor %} 
+    </table>
+
+{% endblock %}

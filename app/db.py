@@ -23,15 +23,28 @@ import os
 #--runde(int)
 #--platz(int)
 
-def add_teilnehmer(id, name, nickname):
-	connection = sqlite3.connect("lanparty.db")
-	cursor = connection.cursor()
-	query_createtables = """create table if not exists teilnehmer(teilnehmerid integer primary key autoincrement, name text, nickname text);
-				create table if not exists turnier(turnierid integer primary key autoincrement, name text, jahr text, sieger integer);
-				create table if not exists spiel(spielid integer primary key autoincrement, name text, typ text, maxspieler integer);
-				create table if not exists vturnierbaum(turnierid integer, spielid integer, teilnehmerid integer, runde integer, platz integer);
-	"""
-	cursor.execute(query_createtables)
-	query1 = "INSERT INTO teilnehmer VALUES({id}, '{name}', '{nickname}')".format(id=id, name=name, nickname=nickname)
-	cursor.execute(query1)
+connection = sqlite3.connect("lanparty.db", check_same_thread=False)
+cursor = connection.cursor()
+
+def create_tables():
+	query_createtable1 = 'create table if not exists teilnehmer(teilnehmerid integer primary key autoincrement, name text, nickname text unique);'
+	query_createtable2 = 'create table if not exists turnier(turnierid integer primary key autoincrement, name text, jahr text, sieger integer);'
+	query_createtable3 = 'create table if not exists spiel(spielid integer primary key autoincrement, name text, typ text, maxspieler integer);'
+	query_createtable4 = 'create table if not exists vturnierbaum(turnierid integer, spielid integer, teilnehmerid integer, runde integer, platz integer);'
+	cursor.execute(query_createtable1)
+	cursor.execute(query_createtable2)
+	cursor.execute(query_createtable3)
+	cursor.execute(query_createtable4)
 	connection.commit()
+
+def add_teilnehmer(name, nickname):
+	query_add_teilnehmer = "INSERT INTO teilnehmer (name, nickname) VALUES('{name}', '{nickname}')".format(name=name, nickname=nickname)
+	cursor.execute(query_add_teilnehmer)
+	connection.commit()
+
+def get_all_teilnehmer():
+	query_get_all_teilnehmer = 'select name, nickname from teilnehmer;'
+	cursor.execute(query_get_all_teilnehmer)
+	result = cursor.fetchall()
+	print(result)
+	return result
