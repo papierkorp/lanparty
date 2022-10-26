@@ -1,16 +1,20 @@
 {% extends "base.html" %}
 {% block app_content %}
 
+    <h1>{{nickname}}</h1>
+
+    <h2>Laufende Turniere:</h2>
 
 
-    <h1>Alle Spieler</h1>
+
+    <h2>Teilgenommen Turniere:</h2>
 
     <table class="blueTable">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Nickname</th>
-                <th>Turnier Wins</th>
+                <th>Turniername</th>
+                <th>Jahr</th>
+                <th>Platzierung</th>
             </tr>
         </thead>
     {% for teilnehmer in alle_teilnehmer %}
@@ -21,5 +25,8 @@
         </tr>
     {% endfor %} 
     </table>
+
+    <h2>Teilgenommene Spiele:</h2>
+
 
 {% endblock %}

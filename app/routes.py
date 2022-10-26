@@ -26,11 +26,13 @@ def turnier_all():
 def turnier_current():
 	return render_template('index.html', title="Turnier")
 
-@app.route('/teilnehmer')
-def teilnehmer():
-	return render_template('index.html', title="Teilnehmer")
 
-@app.route('/teilnehmer/teilnehmer_add', methods=["POST", "GET"])
+@app.route('/profil/<nickname>')
+def profil(nickname):
+	#todo datenbank abfragen + infos anzeigen
+	return render_template('profil.html', nickname=nickname)
+
+@app.route('/teilnehmer_add', methods=["POST", "GET"])
 def teilnehmer_add():
 	form = TeilnehmerAddForm()
 	name=form.name.data
