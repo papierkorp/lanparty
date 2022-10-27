@@ -1,5 +1,4 @@
 import sqlite3
-import os
 
 #lanparty.db
 #spiel
@@ -39,12 +38,15 @@ def create_tables():
 
 def add_teilnehmer(name, nickname):
 	query_add_teilnehmer = "INSERT INTO teilnehmer (name, nickname) VALUES('{name}', '{nickname}')".format(name=name, nickname=nickname)
-	cursor.execute(query_add_teilnehmer)
+	try:
+		cursor.execute(query_add_teilnehmer)
+		return "Teilnehmer erfolgreich angelegt."
+	except sqlite3.IntegrityError as e:
+		return "Integrity Error: " + str(e)
 	connection.commit()
 
 def get_all_teilnehmer():
 	query_get_all_teilnehmer = 'select name, nickname from teilnehmer;'
 	cursor.execute(query_get_all_teilnehmer)
 	result = cursor.fetchall()
-	print(result)
 	return result

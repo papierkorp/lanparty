@@ -38,7 +38,8 @@ def teilnehmer_add():
 	name=form.name.data
 	nickname=form.nickname.data
 	if form.validate_on_submit():
-		add_teilnehmer(name, nickname)
+		result = add_teilnehmer(name, nickname)
+		flash(result)
 	return render_template('teilnehmer_add.html', title="Teilnehmer hinzufügen", form=form)
 
 @app.route('/teilnehmer_all')
