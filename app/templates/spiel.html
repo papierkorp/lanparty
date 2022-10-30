@@ -1,32 +1,32 @@
 {% extends "base.html" %}
 {% block app_content %}
 
-    <h1>{{nickname}}</h1>
+    <h1>{{spiel}}</h1>
 
-    <h2>Laufende Turniere:</h2>
+    <h2>Infos zum Game:</h2>
 
+{% for details in spieldetails %}
+    <ul>
+        <li>Name: {{details[0]}}</li>
+        <li>Typ: {{details[1]}}</li>
+        <li>Maxspieler: {{details[2]}}</li>
+    </ul>
+{% endfor %} 
 
-
-    <h2>Teilgenommen Turniere:</h2>
+    <h2>Historie in Turnieren verwendet:</h2>
 
     <table class="myTable">
         <thead>
             <tr>
                 <th>Turniername</th>
                 <th>Jahr</th>
-                <th>Platzierung</th>
             </tr>
         </thead>
-    {% for teilnehmer in alle_teilnehmer %}
         <tr>
-            <td>{{ teilnehmer[0] }}</td>
-            <td><a href="{{ url_for("profil", nickname=teilnehmer[1]) }}">{{ teilnehmer[1] }}</a></td>
-            <td>0</td>
+            <td></td>
+            <td></td>
         </tr>
-    {% endfor %} 
     </table>
-
-    <h2>Teilgenommene Spiele:</h2>
 
 <style>.loeschen_button input {
     background:linear-gradient(to bottom, #c20808 5%, #f57a7a 100%);
@@ -53,6 +53,6 @@
 }
 
     }</style>
- <form action="" method="post" novalidate class="loeschen_button">{{ form.hidden_tag()}}<h6>Teilnehmer löschen: {{ form.submit }} </h6></form>
+ <form action="" method="post" novalidate class="loeschen_button">{{ form.hidden_tag()}}<h6>Spiel löschen: {{ form.submit }} </h6></form>
 
 {% endblock %}

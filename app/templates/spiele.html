@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block app_content %}
+
+        <h1>Alle Spiele</h1>
+
+
+        <table class="myTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Typ</th>
+                    <th>Maxspieler</th>
+                </tr>
+            </thead>
+            {% for spiel in alle_spiele %}
+                <tr>
+                    <td><a href="{{ url_for("spiel", spiel=spiel[0]) }}">{{ spiel[0] }}</a></td>
+                    <td>{{ spiel[1] }}</td>
+                    <td>{{ spiel[2]}}</td>
+                </tr>
+            {% endfor %} 
+        </table>
+    
+
+{% endblock %}

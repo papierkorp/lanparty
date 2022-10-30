@@ -1,0 +1,27 @@
+#myForm label, input {
+    display:  inline-block;
+}
+
+#myForm input {
+     padding: 5px;
+     font-size: 16px;
+     border-width: 1px;
+     border-color: #333333;
+     background-color: #FFFFFF;
+     color: #000000;
+     border-style: solid;
+     border-radius: 5px;
+     box-shadow: 0px 0px 0px rgba(66,66,66,.40);
+     text-shadow: 0px 0px 0px rgba(66,66,66,.75);
+     width: 40%;
+}
+
+#myForm label {
+   width: 10%;
+   text-align: right;
+   margin-right: 16px;
+}
+
+#myForm input[type=submit] {
+    width: 100%;
+}
