@@ -1,27 +1,35 @@
-#myForm label, input {
-    display:  inline-block;
+#myForm *{
+    width: 50%;
+    box-sizing: border-box;
+    letter-spacing: 2px;
 }
 
-#myForm input {
-     padding: 5px;
+#myForm input, select {
+     padding: 8px;
      font-size: 16px;
-     border-width: 1px;
-     border-color: #333333;
      background-color: #FFFFFF;
      color: #000000;
+     border-bottom: 1px;
      border-style: solid;
      border-radius: 5px;
+     border-width: 1px;
+     border-color: lightgrey;
      box-shadow: 0px 0px 0px rgba(66,66,66,.40);
      text-shadow: 0px 0px 0px rgba(66,66,66,.75);
-     width: 40%;
+     width: 100%;
+     font-style: italic;
 }
 
-#myForm label {
-   width: 10%;
-   text-align: right;
-   margin-right: 16px;
-}
 
 #myForm input[type=submit] {
     width: 100%;
+    display: block;
+    border: 0;
+    box-shadow: 0 0 4px grey;
+    cursor: pointer;
+    font-style: normal;
+}
+
+
+#myForm select {
 }

@@ -13,7 +13,7 @@ import sqlite3
 #turnier
 #--turnierid(int)
 #--name(text)
-#--jahr(text)
+#--jahr(date)
 #--sieger(integer)
 #vturnierbaum
 #--turnierid(int)
@@ -27,9 +27,9 @@ cursor = connection.cursor()
 
 def create_tables():
 	query_createtable1 = 'create table if not exists teilnehmer(teilnehmerid integer primary key autoincrement, name text, nickname text unique);'
-	query_createtable2 = 'create table if not exists turnier(turnierid integer primary key autoincrement, name text, jahr text, sieger integer);'
+	query_createtable2 = 'create table if not exists turnier(turnierid integer primary key autoincrement, name text, jahr date default (strftime(\'%m-%Y\')), sieger integer);'
 	query_createtable3 = 'create table if not exists spiel(spielid integer primary key autoincrement, name text, typ text, maxspieler integer);'
-	query_createtable4 = 'create table if not exists vturnierbaum(turnierid integer, spielid integer, teilnehmerid integer, runde integer, platz integer);'
+	query_createtable4 = 'create table if not exists turnierdetails(turnierdetailsid integer primary key autoincrement, turnierid integer references turnier(turnierid), spielid integer references spiel(spielid), teilnehmerid integer references teilnehmer(teilnehmerid), runde integer, platz integer);'
 	cursor.execute(query_createtable1)
 	cursor.execute(query_createtable2)
 	cursor.execute(query_createtable3)

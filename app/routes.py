@@ -1,19 +1,31 @@
 from flask import render_template, flash, redirect, url_for, request, g
 from app import app
-from app.db import add_teilnehmer, get_all_teilnehmer, delete_teilnehmer, add_spiel, get_all_spiele, delete_spiel, get_spiel
+from app.db import add_teilnehmer, get_all_teilnehmer, delete_teilnehmer, add_spiel, get_all_spiele, delete_spiel, get_spiel, create_tables
 import sqlite3
 import os
-from app.forms import TeilnehmerNeuForm, DeleteForm, SpielNeuForm
+from app.forms import TeilnehmerNeuForm, DeleteForm, SpielNeuForm, TurnierNeuForm
 
+#Ablauf
+# Neues Turnier
+## 1) In DB neues Turnier mit ID + Name + Jahr
+## 2) pro Teilnehmer pro Spiel: neue turnierbaum Verknüpfung mit TurnierID + TeilnehmerID + SpielID
+# Eintrag im Spieldetail vom Turnier
+## 1) insert into verknüpfung where turnierid=, teilnehmerid=, spielid= values (rundennummer, platz)
 @app.route('/')
 @app.route('/index')
 def index():
 	return render_template('index.html')
 
 
-@app.route('/turnier_neu')
+@app.route('/turnier_neu', methods=["POST", "GET"])
 def turnier_neu():
-	return render_template('turnier_neu.html', title="Turnier")
+	form = TurnierNeuForm()
+	form.spielliste.choices=[(s[0]) for s in get_all_spiele()]
+	form.teilnehmer.choices=[(t[1]) for t in get_all_teilnehmer()]
+	if form.validate_on_submit():
+		flash(form.teilnehmer.data)
+		flash(form.spielliste.data)
+	return render_template('turnier_neu.html', title="Turnier", form=form)
 
 @app.route('/turniere')
 def turniere():
@@ -40,7 +52,8 @@ def teilnehmer_neu():
 	name=form.name.data
 	nickname=form.nickname.data
 	if form.validate_on_submit():
-		flash(add_teilnehmer(name, nickname))
+		create_tables()
+		#flash(add_teilnehmer(name, nickname))
 	return render_template('teilnehmer_neu.html', title="Teilnehmer hinzufügen", form=form)
 
 @app.route('/teilnehmer', methods=["POST", "GET"])

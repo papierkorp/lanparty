@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block app_content %}
 
-    <h1>Spieler hinzufügen</h1>
+    <h1>Neues Turnier starten:</h1>
     <form action="" method="post" novalidate id=myForm>
         {{ form.hidden_tag() }}
         <p>
@@ -11,8 +11,16 @@
             {% endfor %}
         </p>
         <p>
-            {{ form.nickname(size=32) }}
-            {% for error in form.nickname.errors %}
+            <h3>{{ form.teilnehmer.label }}</h3>
+            {{ form.teilnehmer(size=5) }}
+            {% for error in form.teilnehmer.errors %}
+                <span style="color: red;">[{{error}}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            <h3>{{ form.spielliste.label }}</h3>
+            {{ form.spielliste(size=5) }}
+            {% for error in form.spielliste.errors %}
                 <span style="color: red;">[{{error}}]</span>
             {% endfor %}
         </p>
