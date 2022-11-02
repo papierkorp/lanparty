@@ -28,31 +28,7 @@
         </tr>
     </table>
 
-<style>.loeschen_button input {
-    background:linear-gradient(to bottom, #c20808 5%, #f57a7a 100%);
-    background-color:#c20808;
-    border-radius:6px;
-    border:1px solid #fa7676;
-    display:inline-block;
-    cursor:pointer;
-    color:#ffffff;
-    font-family:Arial;
-    font-size:9px;
-    font-weight:bold;
-    font-style:italic;
-    padding:1px 6px;
-    text-decoration:none;
-}
-.loeschen_button input:hover {
-    background:linear-gradient(to bottom, #f57a7a 5%, #c20808 100%);
-    background-color:#f57a7a;
-}
-.loeschen_button input:active {
-    position:relative;
-    top:1px;
-}
 
-    }</style>
  <form action="" method="post" novalidate class="loeschen_button">{{ form.hidden_tag()}}<h6>Spiel löschen: {{ form.submit }} </h6></form>
 
 {% endblock %}

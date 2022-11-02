@@ -9,6 +9,7 @@
 
     <h2>Teilgenommen Turniere:</h2>
 
+    ##todo: platzierung
     <table class="myTable">
         <thead>
             <tr>
@@ -17,10 +18,10 @@
                 <th>Platzierung</th>
             </tr>
         </thead>
-    {% for teilnehmer in alle_teilnehmer %}
+    {% for turnier in teilgenommene_turniere %}
         <tr>
-            <td>{{ teilnehmer[0] }}</td>
-            <td><a href="{{ url_for("profil", nickname=teilnehmer[1]) }}">{{ teilnehmer[1] }}</a></td>
+            <td><a href="{{ url_for("turnier", turnierid=turnier[0]) }}">{{ turnier[1] }}</a></td>
+            <td>{{ turnier[2] }}</td>
             <td>0</td>
         </tr>
     {% endfor %} 

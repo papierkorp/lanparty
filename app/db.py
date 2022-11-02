@@ -36,6 +36,8 @@ def create_tables():
 	cursor.execute(query_createtable4)
 	connection.commit()
 
+
+
 def add_teilnehmer(name, nickname):
 	query = "INSERT INTO teilnehmer (name, nickname) VALUES('{name}', '{nickname}')".format(name=name, nickname=nickname)
 	message = "Teilnehmer erfolgreich angelegt."
@@ -46,31 +48,7 @@ def add_spiel(name, typ, maxspieler):
 	message = "Spiel erfolgreich hinzugefügt."
 	return execute_query(query=query,message=message)
 
-def get_all_teilnehmer():
-	try:
-		query = 'select name, nickname from teilnehmer;'
-		cursor.execute(query)
-		return cursor.fetchall()
-	except sqlite3.IntegrityError as e:
-		return "Integrity Error: " + str(e)
-	connection.close()
 
-def get_all_spiele():
-	try:
-		query = 'select name, typ, maxspieler from spiel;'
-		return cursor.execute(query)
-	except sqlite3.IntegrityError as e:
-		return "Integrity Error: " + str(e)
-	connection.close()
-
-def get_spiel(name):
-	try:
-		query = 'select name, typ, maxspieler from spiel where name="{name}";'.format(name=name)
-		cursor.execute(query)
-		return cursor.fetchall()
-	except sqlite3.IntegrityError as e:
-		return "Integrity Error: " + str(e)
-	connection.close()
 
 def delete_teilnehmer(nickname):
 	query = "DELETE FROM teilnehmer WHERE nickname='{nickname}'".format(nickname=nickname)
@@ -82,11 +60,46 @@ def delete_spiel(spiel):
 	message = "Teilnehmer erfolgreich gelöscht."
 	return execute_query(query=query, message=message)
 
+
+
+def get_all_teilnehmer():
+	query = 'select name, nickname from teilnehmer;'
+	return execute_select_query(query)
+
+def get_all_spiele():
+	query = 'select name, typ, maxspieler from spiel;'
+	return execute_select_query(query)
+
+def get_spiel(name):
+	query = 'select name, typ, maxspieler from spiel where name="{name}";'.format(name=name)
+	return execute_select_query(query)
+
+def get_teilgenommene_turniere_pro_teilnehmer(teilnehmerid):
+	query= 'select turnier.turnierid, turnier.name, turnier.jahr from turnierdetails as t inner join turnier on t.turnierid = turnier.turnierid where t.teilnehmerid = {teilnehmerid} group by t.turnierid;'.format(teilnehmerid=teilnehmerid)
+	return execute_select_query(query)
+
+def get_teilnehmerid(nickname):
+	query = 'select teilnehmerid from teilnehmer where nickname = "{nickname}";'.format(nickname=nickname)
+	return execute_select_query(query)
+
+def get_punkteliste(turnierid):
+	query = 'select spiel.name, teilnehmer.name, "Runde: " || v.runde, "Platz: " || v.platz from turnierdetails as v inner join teilnehmer on v.teilnehmerid = teilnehmer.teilnehmerid inner join spiel on v.spielid = spiel.spielid where v.turnierid=2 and v.platz is not NULL;'
+	return execute_select_query(query)
+
+
 def execute_query(query,message):
 	try:
 		cursor.execute(query)
 		connection.commit()
 		return message
+	except sqlite3.IntegrityError as e:
+		return "Integrity Error: " + str(e)
+	connection.close()
+
+def execute_select_query(query):
+	try:
+		cursor.execute(query)
+		return cursor.fetchall()
 	except sqlite3.IntegrityError as e:
 		return "Integrity Error: " + str(e)
 	connection.close()

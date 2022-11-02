@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request, g
 from app import app
-from app.db import add_teilnehmer, get_all_teilnehmer, delete_teilnehmer, add_spiel, get_all_spiele, delete_spiel, get_spiel, create_tables
+from app.db import get_punkteliste, get_teilnehmerid, add_teilnehmer, get_all_teilnehmer, delete_teilnehmer, add_spiel, get_all_spiele, delete_spiel, get_spiel, create_tables, get_teilgenommene_turniere_pro_teilnehmer
 import sqlite3
 import os
 from app.forms import TeilnehmerNeuForm, DeleteForm, SpielNeuForm, TurnierNeuForm
@@ -15,6 +15,13 @@ from app.forms import TeilnehmerNeuForm, DeleteForm, SpielNeuForm, TurnierNeuFor
 @app.route('/index')
 def index():
 	return render_template('index.html')
+
+@app.route('/turnier/<turnierid>')
+def turnier(turnierid):
+	#todo turniername
+	#todo punkteliste übersichtlicher
+	punkteliste = get_punkteliste(turnierid)
+	return render_template('turnier.html', title="Turnier", punkteliste=punkteliste)
 
 
 @app.route('/turnier_neu', methods=["POST", "GET"])
@@ -39,11 +46,13 @@ def turnier_aktiv():
 @app.route('/profil/<nickname>', methods=["POST", "GET"])
 def profil(nickname):
 	#todo datenbank abfragen + infos anzeigen
+	teilnehmerid = get_teilnehmerid(nickname)
+	teilgenommene_turniere = get_teilgenommene_turniere_pro_teilnehmer(teilnehmerid[0][0])
 	form = DeleteForm()
 	if form.validate_on_submit():
 		flash(delete_teilnehmer(nickname))
 		return redirect(url_for('teilnehmer'))
-	return render_template('profil.html', nickname=nickname, form=form)
+	return render_template('profil.html', nickname=nickname, form=form, teilgenommene_turniere = teilgenommene_turniere)
 
 
 @app.route('/teilnehmer_neu', methods=["POST", "GET"])
