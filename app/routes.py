@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request, g
 from app import app
-from app.db import get_punkteliste, get_teilnehmerid, add_teilnehmer, get_all_teilnehmer, delete_teilnehmer, add_spiel, get_all_spiele, delete_spiel, get_spiel, create_tables, get_teilgenommene_turniere_pro_teilnehmer
+from app.db import get_punkte_pro_spiel_pro_turnier, get_spielliste_pro_turnier, get_punkteliste, get_teilnehmerid, add_teilnehmer, get_all_teilnehmer, delete_teilnehmer, add_spiel, get_all_spiele, delete_spiel, get_spiel, create_tables, get_teilgenommene_turniere_pro_teilnehmer
 import sqlite3
 import os
 from app.forms import TeilnehmerNeuForm, DeleteForm, SpielNeuForm, TurnierNeuForm
@@ -20,8 +20,22 @@ def index():
 def turnier(turnierid):
 	#todo turniername
 	#todo punkteliste übersichtlicher
+	spielliste_pro_turnier = get_spielliste_pro_turnier(turnierid)
 	punkteliste = get_punkteliste(turnierid)
-	return render_template('turnier.html', title="Turnier", punkteliste=punkteliste)
+	punkteliste_pro_spiel = []
+	for i in spielliste_pro_turnier:
+		punkteliste_pro_spiel.append(get_punkte_pro_spiel_pro_turnier(turnierid=turnierid, spielid=i[0]))
+	print(punkteliste_pro_spiel)
+	print(spielliste_pro_turnier)
+
+	for spiel in spielliste_pro_turnier:
+		for spielerg in punkteliste_pro_spiel:
+			print("--------------spielerg für {spiel}".format(spiel=spiel))
+			print(spielerg)
+			for element in spiel:
+				print("--------------element: ")
+				print(element)
+	return render_template('turnier.html', title="Turnier", punktelisteturnier=punkteliste, punktelistespiel=punkteliste_pro_spiel, spielliste=spielliste_pro_turnier)
 
 
 @app.route('/turnier_neu', methods=["POST", "GET"])

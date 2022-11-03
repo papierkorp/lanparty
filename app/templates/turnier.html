@@ -5,6 +5,7 @@
 
     <h2>Aktuelle Punkteliste:</h2>
 
+    <!--todo Punkteliste gesamt-->
     <table class="myTable">
         <thead>
             <tr>
@@ -14,7 +15,7 @@
                 <th>Platzierung</th>
             </tr>
         </thead>
-    {% for element in punkteliste %}
+    {% for element in punktelisteturnier %}
         <tr>
             <td>{{ element[0] }}</td>
             <td>{{ element[1] }}</td>
@@ -24,5 +25,33 @@
     {% endfor %} 
     </table>
 
+    <h2>Aktuelle Spielliste:</h2>
+
+    {% for spiel in spielliste %}
+<h3 style="padding-left: 48px; font-weight: bold; font-style: italic; text-decoration: underline solid rgb(68, 68, 68);">{{spiel[1]}}</h4>
     
+    <table class="myTable">
+        <thead>
+            <tr>
+                <th>Teilnehmer</th>
+                <th>Runde</th>
+                <th>Platzierung</th>
+            </tr>
+        </thead>
+        {% for spielerg in punktelistespiel %}
+            {% for element in spielerg %}
+                {% if spiel[1] in element %}
+                    <tr>
+                        <td>{{ element[1] }}</td>
+                        <td>{{ element[2] }}</td>
+                        <td>{{ element[3] }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %} 
+        {% endfor %}
+    </table>
+    
+    {% endfor %}
+
+
 {% endblock %}

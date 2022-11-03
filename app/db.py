@@ -83,8 +83,22 @@ def get_teilnehmerid(nickname):
 	return execute_select_query(query)
 
 def get_punkteliste(turnierid):
-	query = 'select spiel.name, teilnehmer.name, "Runde: " || v.runde, "Platz: " || v.platz from turnierdetails as v inner join teilnehmer on v.teilnehmerid = teilnehmer.teilnehmerid inner join spiel on v.spielid = spiel.spielid where v.turnierid=2 and v.platz is not NULL;'
+	query = 'select spiel.name, teilnehmer.name, "Runde: " || td.runde, "Platz: " || td.platz from turnierdetails as td inner join teilnehmer on td.teilnehmerid = teilnehmer.teilnehmerid inner join spiel on td.spielid = spiel.spielid where td.turnierid={turnierid} and td.platz is not NULL;'.format(turnierid=turnierid)
 	return execute_select_query(query)
+
+def get_spielliste_pro_turnier(turnierid):
+	query = 'select spiel.spielid, spiel.name from turnierdetails as td inner join turnier on td.turnierid = turnier.turnierid inner join spiel on td.spielid = spiel.spielid where td.turnierid = {turnierid} group by spiel.name;'.format(turnierid=turnierid)
+	return execute_select_query(query)
+
+def get_punkte_pro_spiel_pro_turnier(turnierid, spielid):
+	query = 'select spiel.name, teilnehmer.name, "Runde: " || td.runde, "Platz: " || td.platz from turnierdetails as td inner join teilnehmer on td.teilnehmerid = teilnehmer.teilnehmerid inner join spiel on td.spielid = spiel.spielid where td.turnierid={turnierid} and td.spielid={spielid} and td.platz is not NULL order by td.runde, td.platz;'.format(turnierid=turnierid, spielid=spielid)
+	return execute_select_query(query)
+
+
+
+
+
+
 
 
 def execute_query(query,message):
