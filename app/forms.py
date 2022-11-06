@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectMultipleField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectMultipleField, SelectField
 from wtforms.validators import DataRequired
  
 class TeilnehmerNeuForm(FlaskForm):
@@ -21,3 +21,16 @@ class TurnierNeuForm(FlaskForm):
     teilnehmer = SelectMultipleField('Teilnehmer', validators=[DataRequired()], coerce=str)
     spielliste = SelectMultipleField('Spiele', validators=[DataRequired()], coerce=str)
     submit = SubmitField('Add')
+
+class ErgebnisForm(FlaskForm):
+    ergebnistyp = SelectField('Ergebnistyp:', validators=[DataRequired()], coerce=str)
+    ergebnis = StringField('Ergebnis', validators=[DataRequired()], render_kw={"placeholder": "Ergebnis"})
+    submit = SubmitField('Ergebnis abschicken')
+
+class ErgebnisAddRundeForm(FlaskForm):
+    nur_fuer_label = StringField("Weitere Runde hinzufügen:")
+    submit = SubmitField('Runde hinzufügen')
+
+class ErgebnisDeleteRundeForm(FlaskForm):
+    runden = SelectField('Bestimmte Runde löschen:', validators=[DataRequired()], coerce=str)
+    submit = SubmitField('Runde löschen')

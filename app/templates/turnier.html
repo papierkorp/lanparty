@@ -3,7 +3,7 @@
 
     <h1></h1>
 
-    <h2>Aktuelle Punkteliste:</h2>
+    <h2>Punkteliste:</h2>
 
     <!--todo Punkteliste gesamt-->
     <table class="myTable">
@@ -28,7 +28,8 @@
     <h2>Aktuelle Spielliste:</h2>
 
     {% for spiel in spielliste %}
-<h3 style="padding-left: 48px; font-weight: bold; font-style: italic; text-decoration: underline solid rgb(68, 68, 68);">{{spiel[1]}}</h4>
+<h3 style="padding-left: 48px; font-weight: bold; font-style: italic; text-decoration: underline solid rgb(68, 68, 68);">
+<a href="{{ url_for("ergebnis", turnierid=turnierid, spielname=spiel[1]) }}">{{spiel[1]}}</a></h3>
     
     <table class="myTable">
         <thead>

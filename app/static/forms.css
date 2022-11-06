@@ -1,10 +1,11 @@
-#myForm *{
+#myForm_add *, #myForm_edit *{
     width: 50%;
     box-sizing: border-box;
     letter-spacing: 2px;
 }
 
-#myForm input, select {
+
+#myForm_add input, #myForm_add select, #myForm_edit input, #myForm_edit select {
      padding: 8px;
      font-size: 16px;
      background-color: #FFFFFF;
@@ -21,18 +22,35 @@
 }
 
 
-#myForm input[type=submit] {
+#myForm_add input[type=submit], #myForm_edit input[type=submit] {
     width: 100%;
-    display: block;
     border: 0;
     box-shadow: 0 0 4px grey;
     cursor: pointer;
     font-style: normal;
 }
 
-
-#myForm select {
+#myForm_edit input[type=text] {
+    min-width: 300px;
+    padding-right: 18px;
 }
+
+#myForm_edit .input_edit {
+    padding: 20px;
+}
+
+#myForm_add select {
+}
+
+#myForm_edit select {
+    width: fit-content;
+}
+
+#myForm_edit input[type=submit] {
+    width: 10%;
+    min-width: fit-content;
+}
+
 
 .loeschen_button input {
     background:linear-gradient(to bottom, #c20808 5%, #f57a7a 100%);

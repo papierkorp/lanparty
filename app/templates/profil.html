@@ -20,7 +20,7 @@
         </thead>
     {% for turnier in teilgenommene_turniere %}
         <tr>
-            <td><a href="{{ url_for("turnier", turnierid=turnier[0]) }}">{{ turnier[1] }}</a></td>
+            <td><a href="{{ url_for("turniere", turnierid=turnier[0]) }}">{{ turnier[1] }}</a></td>
             <td>{{ turnier[2] }}</td>
             <td>0</td>
         </tr>

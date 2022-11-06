@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block app_content %}
+
+    <h1>{{turniername[0][0]}}: Ergebnis für {{spielname}}</h1>{{ ergebnistyp }}
+
+    <p><form action="" method="post" novalidate id="myForm_edit">{{form_add.nur_fuer_label.label}} {{form_add.submit}}</form></p>
+    
+    <p><form action="" method="post" novalidate id="myForm_edit">{{form_delete.runden.label}} {{form_delete.runden}} {{form_delete.submit}}</form></p>
+
+    <p><form action="" method="post" novalidate id="myForm_edit">
+    {{ form_erg.hidden_tag()}}
+        <p>{{form_erg.ergebnistyp.label}} {{ form_erg.ergebnistyp}}</p>
+        
+
+        <p><table class="myTable">
+            <thead>
+                <tr>
+                    <th>Teilnehmer</th>
+                    <th>Runde</th>
+                    <th>Ergebnis</th>
+                </tr>
+            </thead>
+        {% for spielerg in punkteliste %}
+                <tr>
+                    <td>{{ spielerg[1] }}</td>
+                    <td>{{ spielerg[2] }}</td>
+                    <td class="input_edit">{{form_erg.ergebnis(value=spielerg[3])}}</td>
+                </tr>
+        {% endfor %}
+
+    </table></p>
+    <p>{{ form_erg.submit }}</p>
+    </form></p>
+
+{% endblock %}
+
+

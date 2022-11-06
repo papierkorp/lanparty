@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block app_content %}
+
+    <h1>Turniere Übersicht</h1>
+
+        <table class="myTable">
+        <thead>
+            <tr>
+                <th>Turniername</th>
+                <th>Jahr</th>
+            </tr>
+        </thead>
+    {% for turnier in turniere %}
+        <tr>
+            <td><a href="{{ url_for("turniere", turnierid=turnier[0]) }}">{{ turnier[1] }}</a></td>
+            <td>{{ turnier[2] }}</td>
+        </tr>
+    {% endfor %} 
+    </table>
+
+{% endblock %}

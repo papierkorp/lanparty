@@ -15,12 +15,14 @@ import sqlite3
 #--name(text)
 #--jahr(date)
 #--sieger(integer)
-#vturnierbaum
+#turnierdetails
 #--turnierid(int)
 #--spielid(int)
 #--teilnehmerid(int)
 #--runde(int)
 #--platz(int)
+#--ergebnis(text)
+#--ergebnistyp(string)
 
 connection = sqlite3.connect("lanparty.db", check_same_thread=False)
 cursor = connection.cursor()
@@ -29,7 +31,7 @@ def create_tables():
 	query_createtable1 = 'create table if not exists teilnehmer(teilnehmerid integer primary key autoincrement, name text, nickname text unique);'
 	query_createtable2 = 'create table if not exists turnier(turnierid integer primary key autoincrement, name text, jahr date default (strftime(\'%m-%Y\')), sieger integer);'
 	query_createtable3 = 'create table if not exists spiel(spielid integer primary key autoincrement, name text, typ text, maxspieler integer);'
-	query_createtable4 = 'create table if not exists turnierdetails(turnierdetailsid integer primary key autoincrement, turnierid integer references turnier(turnierid), spielid integer references spiel(spielid), teilnehmerid integer references teilnehmer(teilnehmerid), runde integer, platz integer);'
+	query_createtable4 = 'create table if not exists turnierdetails(turnierdetailsid integer primary key autoincrement, turnierid integer references turnier(turnierid), spielid integer references spiel(spielid), teilnehmerid integer references teilnehmer(teilnehmerid), runde integer, platz integer, ergebnistyp text, ergebnis integer);'
 	cursor.execute(query_createtable1)
 	cursor.execute(query_createtable2)
 	cursor.execute(query_createtable3)
@@ -48,8 +50,6 @@ def add_spiel(name, typ, maxspieler):
 	message = "Spiel erfolgreich hinzugefügt."
 	return execute_query(query=query,message=message)
 
-
-
 def delete_teilnehmer(nickname):
 	query = "DELETE FROM teilnehmer WHERE nickname='{nickname}'".format(nickname=nickname)
 	message = "Teilnehmer erfolgreich gelöscht."
@@ -62,6 +62,16 @@ def delete_spiel(spiel):
 
 
 
+
+
+def get_turniere():
+	query = 'select * from turnier;'
+	return execute_select_query(query)
+
+def get_turniername(turnierid):
+	query = 'select name || " " || jahr from turnier where turnierid={turnierid};'.format(turnierid=turnierid)
+	return execute_select_query(query)
+
 def get_all_teilnehmer():
 	query = 'select name, nickname from teilnehmer;'
 	return execute_select_query(query)
@@ -70,8 +80,12 @@ def get_all_spiele():
 	query = 'select name, typ, maxspieler from spiel;'
 	return execute_select_query(query)
 
+def get_ergebnistyp(turnierid, spielid):
+	query = 'select distinct(ergebnistyp) from turnierdetails where turnierid={turnierid} and spielid={spielid};'.format(turnierid=turnierid, spielid=spielid)
+	return execute_select_query(query)
+
 def get_spiel(name):
-	query = 'select name, typ, maxspieler from spiel where name="{name}";'.format(name=name)
+	query = 'select name, typ, maxspieler, spielid from spiel where name="{name}";'.format(name=name)
 	return execute_select_query(query)
 
 def get_teilgenommene_turniere_pro_teilnehmer(teilnehmerid):
@@ -83,7 +97,7 @@ def get_teilnehmerid(nickname):
 	return execute_select_query(query)
 
 def get_punkteliste(turnierid):
-	query = 'select spiel.name, teilnehmer.name, "Runde: " || td.runde, "Platz: " || td.platz from turnierdetails as td inner join teilnehmer on td.teilnehmerid = teilnehmer.teilnehmerid inner join spiel on td.spielid = spiel.spielid where td.turnierid={turnierid} and td.platz is not NULL;'.format(turnierid=turnierid)
+	query = 'select spiel.name, teilnehmer.name, "Runde: " || td.runde, "Platz: " || td.platz from turnierdetails as td inner join teilnehmer on td.teilnehmerid = teilnehmer.teilnehmerid inner join spiel on td.spielid = spiel.spielid where td.turnierid={turnierid};'.format(turnierid=turnierid)
 	return execute_select_query(query)
 
 def get_spielliste_pro_turnier(turnierid):
@@ -91,10 +105,16 @@ def get_spielliste_pro_turnier(turnierid):
 	return execute_select_query(query)
 
 def get_punkte_pro_spiel_pro_turnier(turnierid, spielid):
-	query = 'select spiel.name, teilnehmer.name, "Runde: " || td.runde, "Platz: " || td.platz from turnierdetails as td inner join teilnehmer on td.teilnehmerid = teilnehmer.teilnehmerid inner join spiel on td.spielid = spiel.spielid where td.turnierid={turnierid} and td.spielid={spielid} and td.platz is not NULL order by td.runde, td.platz;'.format(turnierid=turnierid, spielid=spielid)
+	query = 'select spiel.name, teilnehmer.name, td.runde, td.ergebnis from turnierdetails as td inner join teilnehmer on td.teilnehmerid = teilnehmer.teilnehmerid inner join spiel on td.spielid = spiel.spielid where td.turnierid={turnierid} and td.spielid={spielid} order by td.runde, td.platz;'.format(turnierid=turnierid, spielid=spielid)
 	return execute_select_query(query)
 
+def get_anzahl_teilnehmer_pro_turnier(turnierid):
+	query = 'select count(distinct td.teilnehmerid) from turnierdetails as td where td.turnierid={turnierid};'.format(turnierid=turnierid)
+	return execute_select_query(query)
 
+def get_runden_pro_spiel_pro_turnier(turnierid, spielid):
+	query = 'select distinct(td.runde) from turnierdetails as td inner join teilnehmer on td.teilnehmerid = teilnehmer.teilnehmerid inner join spiel on td.spielid = spiel.spielid where td.turnierid={turnierid} and td.spielid={spielid} order by td.runde, td.platz;'.format(turnierid=turnierid, spielid=spielid)
+	return execute_select_query(query)
 
 
 
