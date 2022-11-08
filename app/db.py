@@ -40,6 +40,9 @@ def create_tables():
 
 
 
+
+
+
 def add_teilnehmer(name, nickname):
 	query = "INSERT INTO teilnehmer (name, nickname) VALUES('{name}', '{nickname}')".format(name=name, nickname=nickname)
 	message = "Teilnehmer erfolgreich angelegt."
@@ -59,6 +62,8 @@ def delete_spiel(spiel):
 	query = "DELETE FROM spiel WHERE name='{spiel}'".format(spiel=spiel)
 	message = "Teilnehmer erfolgreich gelöscht."
 	return execute_query(query=query, message=message)
+
+
 
 
 
@@ -85,7 +90,7 @@ def get_ergebnistyp(turnierid, spielid):
 	return execute_select_query(query)
 
 def get_spiel(name):
-	query = 'select name, typ, maxspieler, spielid from spiel where name="{name}";'.format(name=name)
+	query = 'select * from spiel where name="{name}";'.format(name=name)
 	return execute_select_query(query)
 
 def get_teilgenommene_turniere_pro_teilnehmer(teilnehmerid):
@@ -108,15 +113,17 @@ def get_punkte_pro_spiel_pro_turnier(turnierid, spielid):
 	query = 'select spiel.name, teilnehmer.name, td.runde, td.ergebnis from turnierdetails as td inner join teilnehmer on td.teilnehmerid = teilnehmer.teilnehmerid inner join spiel on td.spielid = spiel.spielid where td.turnierid={turnierid} and td.spielid={spielid} order by td.runde, td.platz;'.format(turnierid=turnierid, spielid=spielid)
 	return execute_select_query(query)
 
-def get_anzahl_teilnehmer_pro_turnier(turnierid):
-	query = 'select count(distinct td.teilnehmerid) from turnierdetails as td where td.turnierid={turnierid};'.format(turnierid=turnierid)
+def get_teilnehmer_pro_turnier(turnierid):
+	query = 'select teilnehmer.name from turnierdetails as v inner join turnier on v.turnierid = turnier.turnierid inner join teilnehmer on v.teilnehmerid = teilnehmer.teilnehmerid where v.turnierid = {turnierid} group by teilnehmer.name;'.format(turnierid=turnierid)
 	return execute_select_query(query)
 
 def get_runden_pro_spiel_pro_turnier(turnierid, spielid):
 	query = 'select distinct(td.runde) from turnierdetails as td inner join teilnehmer on td.teilnehmerid = teilnehmer.teilnehmerid inner join spiel on td.spielid = spiel.spielid where td.turnierid={turnierid} and td.spielid={spielid} order by td.runde, td.platz;'.format(turnierid=turnierid, spielid=spielid)
 	return execute_select_query(query)
 
-
+def get_turniere_pro_spiel(spielid):
+	query = 'select distinct turnier.name, turnier.jahr from turnierdetails as v inner join turnier on v.turnierid = turnier.turnierid where v.spielid = {spielid};'.format(spielid=spielid)
+	return execute_select_query(query)
 
 
 

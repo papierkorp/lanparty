@@ -7,9 +7,9 @@
 
 {% for details in spieldetails %}
     <ul>
-        <li>Name: {{details[0]}}</li>
-        <li>Typ: {{details[1]}}</li>
-        <li>Maxspieler: {{details[2]}}</li>
+        <li>Name: {{details[1]}}</li>
+        <li>Typ: {{details[2]}}</li>
+        <li>Maxspieler: {{details[3]}}</li>
     </ul>
 {% endfor %} 
 
@@ -22,10 +22,12 @@
                 <th>Jahr</th>
             </tr>
         </thead>
+        {% for details in turniere %}
         <tr>
-            <td></td>
-            <td></td>
+            <td><a href="{{ url_for("turniere", turnierid=details[0]) }}">{{details[0]}}</a></td>
+            <td>{{details[1]}}</td>
         </tr>
+        {% endfor %}
     </table>
 
 
