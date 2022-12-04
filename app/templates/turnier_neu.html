@@ -17,13 +17,7 @@
                 <span style="color: red;">[{{error}}]</span>
             {% endfor %}
         </p>
-        <p>
-            <h3>{{ form.spielliste.label }}</h3>
-            {{ form.spielliste(size=5) }}
-            {% for error in form.spielliste.errors %}
-                <span style="color: red;">[{{error}}]</span>
-            {% endfor %}
-        </p>
+
         <p>
             {{ form.submit }}
         </p>

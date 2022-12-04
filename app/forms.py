@@ -19,7 +19,6 @@ class SpielNeuForm(FlaskForm):
 class TurnierNeuForm(FlaskForm):
     name = StringField('Turnier-Name', validators=[DataRequired()], render_kw={"placeholder": "Turnier-Name"})
     teilnehmer = SelectMultipleField('Teilnehmer', validators=[DataRequired()], coerce=str)
-    spielliste = SelectMultipleField('Spiele', validators=[DataRequired()], coerce=str)
     submit = SubmitField('Add')
 
 class ErgebnisForm(FlaskForm):
