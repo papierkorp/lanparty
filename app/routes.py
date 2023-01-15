@@ -2,6 +2,7 @@ from flask import render_template, flash, redirect, url_for, request, g
 from app import app
 from app.db import add_turnier, get_turniere_pro_spiel, get_turniere, get_ergebnistyp, get_runden_pro_spiel_pro_turnier, get_turniername, get_teilnehmer_pro_turnier, get_punkte_pro_spiel_pro_turnier, get_spielliste_pro_turnier, get_punkteliste, get_teilnehmerid, add_teilnehmer, get_all_teilnehmer, delete_teilnehmer, add_spiel, get_all_spiele, delete_spiel, get_spiel, create_tables, get_teilgenommene_turniere_pro_teilnehmer
 from app.gruppenerstellung import Gruppenerstellung
+from app.ergebnisberechnung import Ergebnisberechnung
 import sqlite3
 import os
 from app.forms import TeilnehmerNeuForm, DeleteForm, SpielNeuForm, TurnierNeuForm, ErgebnisForm, ErgebnisAddRundeForm, ErgebnisDeleteRundeForm
@@ -23,11 +24,14 @@ def turnier(turnierid):
 	#todo punkteliste übersichtlicher
 	spielliste_pro_turnier = get_spielliste_pro_turnier(turnierid)
 	punkteliste = get_punkteliste(turnierid)
+
 	punkteliste_pro_spiel = []
 	for i in spielliste_pro_turnier:
 		punkteliste_pro_spiel.append(get_punkte_pro_spiel_pro_turnier(turnierid=turnierid, spielid=i[0]))
-	print(punkteliste_pro_spiel)
-	return render_template('turnier.html', title="Turnier", punktelisteturnier=punkteliste, punktelistespiel=punkteliste_pro_spiel, spielliste=spielliste_pro_turnier, turnierid=turnierid)
+	#print(punkteliste_pro_spiel)
+	punkteliste_bearbeitet = Ergebnisberechnung(punkteliste_pro_spiel)
+	print("punkteliste_bearbeitet:", punkteliste_bearbeitet)
+	return render_template('turnier.html', title="Turnier", punktelisteturnier=punkteliste_bearbeitet, punktelistespiel=punkteliste_pro_spiel, spielliste=spielliste_pro_turnier, turnierid=turnierid)
 
 @app.route('/turnier/<turnierid>/<spielname>', methods=["POST", "GET"])
 def ergebnis(turnierid, spielname):

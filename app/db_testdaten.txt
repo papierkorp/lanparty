@@ -1,3 +1,7 @@
+letters = ['a', 'b', 'c'] 
+list(enumerate(letters, 1)) #Ergebnis: [(1, 'a'), (2, 'b'), (3, 'c')] #erzeugt eine Python Objekt Datei (bzw. ein Tupel) aus einer Liste oder einem Tupel, die 1 bedeutet dass der Index bei 1 statt 0 anfängt
+
+
 drop table if exists teilnehmer;
 drop table if exists turnier;
 drop table if exists spiel;

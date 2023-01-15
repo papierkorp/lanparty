@@ -9,18 +9,14 @@
     <table class="myTable">
         <thead>
             <tr>
-                <th>Spiel</th>
                 <th>Teilnehmer</th>
-                <th>Runde</th>
-                <th>Ergebnis</th>
+                <th>Gesamtpunkte</th>
             </tr>
         </thead>
     {% for element in punktelisteturnier %}
         <tr>
             <td>{{ element[0] }}</td>
             <td>{{ element[1] }}</td>
-            <td>{{ element[2] }}</td>
-            <td>{{ element[3] }}</td>
         </tr>
     {% endfor %} 
     </table>
@@ -29,7 +25,7 @@
 
     {% for spiel in spielliste %}
 <h3 style="padding-left: 48px; font-weight: bold; font-style: italic; text-decoration: underline solid rgb(68, 68, 68);">
-<a href="{{ url_for("ergebnis", turnierid=turnierid, spielname=spiel[1]) }}">{{spiel[1]}}</a></h3>
+<a href="{{ url_for('ergebnis', turnierid=turnierid, spielname=spiel[1])}}">{{spiel[1]}}</a></h3>
     
     <table class="myTable">
         <thead>
