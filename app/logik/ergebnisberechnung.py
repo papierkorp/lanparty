@@ -1,11 +1,12 @@
 from collections import defaultdict
 
 def Ergebnisberechnung(punkteliste):
-    #todo zwei spieler mit selbem ergebnis
     ordnung = {
         'kills': True,
         'zeit': False,
         'platz': False,
+        'pvp': False,
+        'Punkte': False,
     }
 
     punkte_gesamt = defaultdict(int)

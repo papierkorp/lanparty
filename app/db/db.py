@@ -48,12 +48,12 @@ def create_tables():
 
 def add_teilnehmer(name, nickname):
 	query = "INSERT INTO teilnehmer (name, nickname) VALUES('{name}', '{nickname}')".format(name=name, nickname=nickname)
-	message = "Teilnehmer erfolgreich angelegt."
+	message = "Teilnehmer {nickname} erfolgreich angelegt.".format(nickname=nickname)
 	return execute_query(query=query, message=message)
 
 def add_spiel(name, typ, maxspieler):
 	query = "INSERT INTO spiel (name, typ, maxspieler) VALUES ('{name}', '{typ}', {maxspieler})".format(name=name, typ=typ, maxspieler=maxspieler)
-	message = "Spiel erfolgreich hinzugefügt."
+	message = "Spiel {name} erfolgreich hinzugefügt.".format(name=name)
 	return execute_query(query=query,message=message)
 
 def add_turnier(turniername, teilnehmerlist):
@@ -68,12 +68,12 @@ def add_turnier(turniername, teilnehmerlist):
 
 def delete_teilnehmer(nickname):
 	query = "DELETE FROM teilnehmer WHERE nickname='{nickname}'".format(nickname=nickname)
-	message = "Teilnehmer erfolgreich gelöscht."
+	message = "Teilnehmer {nickname} erfolgreich gelöscht.".format(nickname=nickname)
 	return execute_query(query=query, message=message)
 
 def delete_spiel(spiel):
 	query = "DELETE FROM spiel WHERE name='{spiel}'".format(spiel=spiel)
-	message = "Teilnehmer erfolgreich gelöscht."
+	message = "Spiel {spiel} erfolgreich gelöscht.".format(spiel=spiel)
 	return execute_query(query=query, message=message)
 
 

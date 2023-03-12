@@ -20,12 +20,14 @@
                     <th>Ergebnis</th>
                 </tr>
             </thead>
-        {% for spielerg in punkteliste %}
-                <tr>
-                    <td>{{ spielerg[1] }}</td>
-                    <td>{{ spielerg[2] }}</td>
-                    <td class="input_edit">{{form_erg.ergebnis(value=spielerg[3])}}</td>
-                </tr>
+        {% for spiel in punkteliste %}
+            {% for ergebnis in spiel %}
+                    <tr>
+                        <td>{{ ergebnis[1] }}</td>
+                        <td>{{ ergebnis[3] }}</td>
+                        <td class="input_edit">{{form_erg.ergebnis(value=ergebnis[4])}}</td>
+                    </tr>
+            {% endfor %}
         {% endfor %}
 
     </table></p>

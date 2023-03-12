@@ -1,0 +1,37 @@
+havetodo:
+
+- Turnier - Übersicht - xxx - Spiel hinzufügen
+- Turnier - Übersicht - xxx - Spiel - Ergebnis hinzufügen
+- Turnier - Übersicht - xxx - Spiel - Ergebnis bearbeiten
+- Turnierdetails - Punkteliste - Gesamtpunkteauswertung (Ergebnisberechnung): zwei spieler mit selbem ergebnis werden noch nicht berücksichtigt
+- Turnierdetails - Punkteliste - Gesamtpunkteauswertung (Ergebnisberechnung): "punkte" einbauen
+
+shouldtodo:
+
+- Allgemein
+  - route File refactore lul
+  - Tests
+- Turnier
+  - Turnier - Übersicht - xxx -Punkteliste pro Spiel
+  - Turnier - Übersicht - xxx - Platzierung
+  - Turnier löschen
+  - Turnier bearbeiten (Teilnehmer hinzu oder weg)
+  - Turnier - neu - Spielauswahl hinzufügen?
+  - ergebnistyp wird mehrmals definiert
+- Teilnehmer
+  - Teilnehmer - xxx - Turniernamelink
+  - Teilnehmer bearbeiten (Name + Nickname ändern)
+  - Bei Teilnehmerübersicht - Platzierung je Turnier hinzufügen
+  - Teilnehmerübersicht: Teilgenommene Spiele + zugehöriges Turnier + Platzierung anzeigen
+- Spiele
+  - Spiele - Übersicht - Filter
+  - Spiel bearbeiten (Details ändern)
+  - Spiel hinzufügen - Typ Select
+- Style
+  - Bootstrap verwenden
+  - Tabellen Bibliothek
+  - Navigation von reinem CSS weg und ne Python Lösung finden? (ist halt schon witzig mit reinem css :D)
+  - irgendwas für Startseite einfallen lassen
+- Datenbank
+  - DB - Tabelle Turnier - das Feld Teilnehmer in Sieger umbennenen
+  - Spieltyp in turnierdetails nötig??
