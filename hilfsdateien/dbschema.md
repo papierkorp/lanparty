@@ -8,4 +8,29 @@ Tabelle spiel
 Felder: spielid (int), name (text), typ (text)(Dedicated Server, Ingame Server, LAN...), maxspieler (int)
 
 Tabelle turnierdetails
-Felder: turnierdetailsid (int), turnierid (turnierid), spielid (spielid), teilnehmerid (teilnehmerid), runde (int), spieltyp (text), ergebnistyp (text), ergebnis (int)
+Felder: turnierdetailsid (int), turnierid (turnierid), spielid (spielid), teilnehmerid (teilnehmerid), runde (int), ergebnistyp (text), ergebnis (int)
+
+
+#lanparty.db
+#spiel
+#--spielid(int)
+#--name(text)
+#--typ(text)
+#--maxspieler(int)
+#teilnehmer
+#--teilnehmerid(int)
+#--name(text)
+#--nickname(text)
+#turnier
+#--turnierid(int)
+#--name(text)
+#--jahr(date)
+#--sieger(integer)
+#turnierdetails
+#--turnierdetailsid(int)
+#--turnierid(int)
+#--spielid(int)
+#--teilnehmerid(int)
+#--runde(int)
+#--ergebnistyp(text)
+#--ergebnis(string)

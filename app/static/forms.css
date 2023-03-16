@@ -75,3 +75,9 @@
     position:relative;
     top:1px;
 }
+
+#myForm_edit .form_disabled{
+    color: white;
+    background-color: darkgrey;
+    border: 0;
+}

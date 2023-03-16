@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request, g
 from app import app
-from app.db.db import add_turnier, get_turniere_pro_spiel, get_turniere, get_ergebnistyp, get_runden_pro_spiel_pro_turnier, get_turniername, get_teilnehmer_pro_turnier, get_punkte_pro_spiel_pro_turnier, get_spielliste_pro_turnier, get_punkteliste, get_teilnehmerid, add_teilnehmer, get_all_teilnehmer, delete_teilnehmer, add_spiel, get_all_spiele, delete_spiel, get_spiel, create_tables, get_teilgenommene_turniere_pro_teilnehmer
+from app.db.db import add_turnier, get_turniere_pro_spiel, get_turniere, get_ergebnistyp, get_runden_pro_spiel_pro_turnier, get_turniername, get_teilnehmer_pro_turnier, get_punkte_pro_spiel_pro_turnier, get_spielliste_pro_turnier, get_punkteliste, get_teilnehmerid, add_teilnehmer, get_all_teilnehmer, delete_teilnehmer, add_spiel, get_all_spiele, delete_spiel, get_spiel, create_tables, get_teilgenommene_turniere_pro_teilnehmer, edit_ergebnis
 from app.logik.gruppenerstellung import Gruppenerstellung
 from app.logik.ergebnisberechnung import Ergebnisberechnung
 import sqlite3
@@ -54,6 +54,12 @@ def ergebnis(turnierid, spielname):
 
 	gruppen = Gruppenerstellung(Teilnehmerliste=teilnehmerliste, maxSpieler=maxspieler)
 
+	if form_erg.validate_on_submit():
+		teilnehmerid = get_teilnehmerid(form_erg.teilnehmer.data)
+		print("form_erg.runde.data", form_erg.runde.data)
+		print("teilnehmerid", teilnehmerid)
+		print("form_erg.runde.data", form_erg.runde.data)
+		flash(edit_ergebnis(turnierid=turnierid, spielid=spielid, teilnehmerid=teilnehmerid, runde=form_erg.runde.data, ergebnis=form_erg.ergebnis.data, ergebnistyp=""))
 	print("Punkteliste: ", punkteliste)
 	return render_template('ergebnis.html', title="Ergebnis", form_erg=form_erg, form_delete=form_delete, form_add=form_add, spielname=spielname, turniername=turniername, punkteliste=punkteliste)
 

@@ -13,6 +13,7 @@ pip install -r requirements.txt
 Webseite lokal starten:
 ```
 cd lan
+FLASK_APP=lan.py #Environment Variable setzen
 venv\Scripts\activate
 flask run
 ```

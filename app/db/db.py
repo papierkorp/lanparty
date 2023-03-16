@@ -1,43 +1,18 @@
 import sqlite3
 import json
 
-#lanparty.db
-#spiel
-#--spielid(int)
-#--name(text)
-#--typ(text)
-#--maxspieler(int)
-#teilnehmer
-#--teilnehmerid(int)
-#--name(text)
-#--nickname(text)
-#turnier
-#--turnierid(int)
-#--name(text)
-#--jahr(date)
-#--sieger(integer)
-#turnierdetails
-#--turnierdetailsid(int)
-#--turnierid(int)
-#--spielid(int)
-#--teilnehmerid(int)
-#--runde(int)
-#--spieltyp()
-#--ergebnistyp(text)
-#--ergebnis(string)
-
 connection = sqlite3.connect("lanparty.db", check_same_thread=False)
 cursor = connection.cursor()
 
 def create_tables():
-	query_createtable1 = 'create table if not exists teilnehmer(teilnehmerid integer primary key autoincrement, name text, nickname text unique);'
-	query_createtable2 = 'create table if not exists turnier(turnierid integer primary key autoincrement, name text, jahr date default (strftime(\'%m-%Y\')), teilnehmer text sieger integer);'
-	query_createtable3 = 'create table if not exists spiel(spielid integer primary key autoincrement, name text, typ text, maxspieler integer);'
-	query_createtable4 = 'create table if not exists turnierdetails(turnierdetailsid integer primary key autoincrement, turnierid integer references turnier(turnierid), spielid integer references spiel(spielid), teilnehmerid integer references teilnehmer(teilnehmerid), runde integer, spieltyp text, ergebnistyp text, ergebnis integer);'
-	cursor.execute(query_createtable1)
-	cursor.execute(query_createtable2)
-	cursor.execute(query_createtable3)
-	cursor.execute(query_createtable4)
+	query_createtable_teilnehmer = 'create table if not exists teilnehmer(teilnehmerid integer primary key autoincrement, name text, nickname text unique);'
+	query_createtable_turnier = 'create table if not exists turnier(turnierid integer primary key autoincrement, name text, jahr date default (strftime(\'%m-%Y\')), teilnehmer text sieger integer);'
+	query_createtable_spiel = 'create table if not exists spiel(spielid integer primary key autoincrement, name text, typ text, maxspieler integer);'
+	query_createtable_turnierdetails = 'create table if not exists turnierdetails(turnierdetailsid integer primary key autoincrement, turnierid integer references turnier(turnierid), spielid integer references spiel(spielid), teilnehmerid integer references teilnehmer(teilnehmerid), runde integer, ergebnistyp text, ergebnis integer);'
+	cursor.execute(query_createtable_teilnehmer)
+	cursor.execute(query_createtable_turnier)
+	cursor.execute(query_createtable_spiel)
+	cursor.execute(query_createtable_turnierdetails)
 	connection.commit()
 	connection.close()
 
@@ -76,6 +51,15 @@ def delete_spiel(spiel):
 	message = "Spiel {spiel} erfolgreich gelöscht.".format(spiel=spiel)
 	return execute_query(query=query, message=message)
 
+
+
+
+
+#insert into turnierdetails(turnierid, spielid, teilnehmerid, runde, ergebnis, ergebnistyp) values (1,1,1,1,45,"kills");
+def edit_ergebnis(turnierid, spielid, teilnehmerid, runde, ergebnis, ergebnistyp):
+	query = "insert or replace into turnierdetails (turnierid, spielid, teilnehmerid, runde, ergebnis, ergebnistyp) values (tuid,sid,teid,rd,{ergebnis}, ergebnistyp)".format(turnierid=turnierid, spielid=spielid, teilnehmerid=teilnehmerid, runde=runde, ergebnis=ergebnis, ergebnistyp=ergebnistyp)
+	message = "Spiel {spielid} für Turnier {turnierid} erfolgreich geupdated."
+	return execute_query(query)
 
 
 

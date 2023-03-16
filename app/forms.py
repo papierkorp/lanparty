@@ -24,6 +24,8 @@ class TurnierNeuForm(FlaskForm):
 class ErgebnisForm(FlaskForm):
     ergebnistyp = SelectField('Ergebnistyp:', validators=[DataRequired()], coerce=str)
     ergebnis = StringField('Ergebnis', validators=[DataRequired()], render_kw={"placeholder": "Ergebnis"})
+    runde=StringField('Runde', render_kw={"placeholder": "Runde", "disabled":"disabled"})
+    teilnehmer=StringField('Teilnehmer', render_kw={"placeholder": "Teilnehmer", "disabled":"disabled"})
     submit = SubmitField('Ergebnis abschicken')
 
 class ErgebnisAddRundeForm(FlaskForm):

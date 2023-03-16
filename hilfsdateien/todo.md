@@ -1,12 +1,11 @@
-havetodo:
-
+# havetodo
 - Turnier - Übersicht - xxx - Spiel hinzufügen
 - Turnier - Übersicht - xxx - Spiel - Ergebnis hinzufügen
 - Turnier - Übersicht - xxx - Spiel - Ergebnis bearbeiten
 - Turnierdetails - Punkteliste - Gesamtpunkteauswertung (Ergebnisberechnung): zwei spieler mit selbem ergebnis werden noch nicht berücksichtigt
 - Turnierdetails - Punkteliste - Gesamtpunkteauswertung (Ergebnisberechnung): "punkte" einbauen
 
-shouldtodo:
+# shouldtodo
 
 - Allgemein
   - route File refactore lul
@@ -32,6 +31,7 @@ shouldtodo:
   - Tabellen Bibliothek
   - Navigation von reinem CSS weg und ne Python Lösung finden? (ist halt schon witzig mit reinem css :D)
   - irgendwas für Startseite einfallen lassen
+  - disabled form style (ergebnis.html > forms.css > #myForm_edit .form_disabled )
 - Datenbank
   - DB - Tabelle Turnier - das Feld Teilnehmer in Sieger umbennenen
-  - Spieltyp in turnierdetails nötig??
+  - funktion edit_ergebnis = spielid und turnierid durch namen ersetzen
