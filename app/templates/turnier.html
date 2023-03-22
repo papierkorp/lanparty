@@ -22,32 +22,46 @@
 
     <h2>Aktuelle Spielliste:</h2>
 
-    {% for spiel in spielliste %}
-<h3 style="padding-left: 48px; font-weight: bold; font-style: italic; text-decoration: underline solid rgb(68, 68, 68);">
-<a href="{{ url_for('ergebnis', turnierid=turnierid, spielname=spiel[1])}}">{{spiel[1]}}</a></h3>
-    
-    <table class="myTable">
-        <thead>
-            <tr>
-                <th>Teilnehmer</th>
-                <th>Runde</th>
-                <th>Ergebnis</th>
-            </tr>
-        </thead>
-        {% for spielerg in punktelistespiel %}
-            {% for element in spielerg %}
-                {% if spiel[1] in element %}
+
+    {% for spiel in punktelistespiel %}
+
+    <h3 style="padding-left: 48px; font-weight: bold; font-style: italic; text-decoration: underline solid rgb(68, 68, 68);">
+    <a href="{{ url_for('ergebnis', turnierid=turnierid, spielname=spiel[0][0][0])}}">{{spiel[0][0][0]}}</a></h3>
+
+            <p><table class="myTable">
+                <thead>
                     <tr>
-                        <td>{{ element[1] }}</td>
-                        <td>{{ element[2] }}</td>
-                        <td>{{ element[3] }}</td>
+                        <th>Teilnehmer</th>
+                        <th>Runde</th>
+                        <th>{{spiel[0][0][2]|capitalize}}</th>
                     </tr>
-                {% endif %}
-            {% endfor %} 
-        {% endfor %}
-    </table>
-    
+                </thead>
+
+
+            {% for runde in spiel %}
+
+                {% for spieler in runde %}
+
+
+                    <tbody>
+                        <tr>
+                            <td>{{spieler[1]}}</td>
+                            <td>{{spieler[3]}}</td>
+                            <td class="input_edit">{{spieler[4]}}</td>
+                        </tr>
+                    </tbody>
+
+                {% endfor %}
+
+
+            {% endfor %}
+
+
+            </table></p>
+
+
     {% endfor %}
+
 
 
 {% endblock %}

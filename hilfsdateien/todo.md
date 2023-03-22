@@ -2,6 +2,9 @@
 - Turnier - Übersicht - xxx - Spiel hinzufügen
 - Turnier - Übersicht - xxx - Spiel - Ergebnis hinzufügen
 - Turnier - Übersicht - xxx - Spiel - Ergebnis bearbeiten
+  - Weitere Runde hinzufügen
+  - Vorhandene Runde löschen
+  - Ergebnis eintragen
 - Turnierdetails - Punkteliste - Gesamtpunkteauswertung (Ergebnisberechnung): zwei spieler mit selbem ergebnis werden noch nicht berücksichtigt
 - Turnierdetails - Punkteliste - Gesamtpunkteauswertung (Ergebnisberechnung): "punkte" einbauen
 
@@ -17,6 +20,7 @@
   - Turnier bearbeiten (Teilnehmer hinzu oder weg)
   - Turnier - neu - Spielauswahl hinzufügen?
   - ergebnistyp wird mehrmals definiert
+  - Turnier - Übersicht: Rundenausgabe pro Spiel überarbeiten
 - Teilnehmer
   - Teilnehmer - xxx - Turniernamelink
   - Teilnehmer bearbeiten (Name + Nickname ändern)
@@ -35,3 +39,4 @@
 - Datenbank
   - DB - Tabelle Turnier - das Feld Teilnehmer in Sieger umbennenen
   - funktion edit_ergebnis = spielid und turnierid durch namen ersetzen
+  - funktion get_punkte_pro_spiel_pro_turnier = nach name sortieren..

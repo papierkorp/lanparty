@@ -97,9 +97,9 @@ insert into turnierdetails(turnierid, spielid, teilnehmerid, runde, ergebnis, er
 insert into turnierdetails(turnierid, spielid, teilnehmerid, runde, ergebnis, ergebnistyp) values (2,1,2,1,146,"kills");
 insert into turnierdetails(turnierid, spielid, teilnehmerid, runde, ergebnis, ergebnistyp) values (2,1,3,1,130,"kills");
 
-insert into turnierdetails(turnierid, spielid, teilnehmerid, runde, ergebnis, ergebnistyp) values (2,3,1,1,3,"platz",);
-insert into turnierdetails(turnierid, spielid, teilnehmerid, runde, ergebnis, ergebnistyp) values (2,3,2,1,1,"platz",);
-insert into turnierdetails(turnierid, spielid, teilnehmerid, runde, ergebnis, ergebnistyp) values (2,3,3,1,2,"platz",);
+insert into turnierdetails(turnierid, spielid, teilnehmerid, runde, ergebnis, ergebnistyp) values (2,3,1,1,3,"platz");
+insert into turnierdetails(turnierid, spielid, teilnehmerid, runde, ergebnis, ergebnistyp) values (2,3,2,1,1,"platz");
+insert into turnierdetails(turnierid, spielid, teilnehmerid, runde, ergebnis, ergebnistyp) values (2,3,3,1,2,"platz");
 
 insert into turnierdetails(turnierid, spielid, teilnehmerid, runde, ergebnis, ergebnistyp) values (2,3,1,2,2,"platz");
 insert into turnierdetails(turnierid, spielid, teilnehmerid, runde, ergebnis, ergebnistyp) values (2,3,2,2,3,"platz");
@@ -348,7 +348,7 @@ select "------------------------------------------------------------";
 select "turnierdetails--------";pragma table_info('turnierdetails');select * from turnierdetails;
 select "------------------------------------------------------------";
 
--- Beispiel mit join, group by und order by:
+-- Beispiel mit join, group by und order by
 --select turnier.name || " " || turnier.jahr, teilnehmer.name,"Platz: " || sum (td.ergebnis)
 --from turnierdetails as td
 --inner join teilnehmer

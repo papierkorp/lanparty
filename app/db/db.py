@@ -111,7 +111,7 @@ def get_punkte_pro_spiel_pro_turnier(turnierid, spielid):
 	anzahlrunden = execute_select_query('select max(runde) from turnierdetails where turnierid={turnierid} and spielid={spielid};'.format(turnierid=turnierid, spielid=spielid))
 	for runde in range(1, anzahlrunden[0][0]+1):
 		ergebnistyp = execute_select_query('select distinct(ergebnistyp) from turnierdetails where turnierid={turnierid} and spielid={spielid} and runde={runde};'.format(turnierid=turnierid, spielid=spielid, runde=runde))
-		print("ergebnistyp:", ergebnistyp[0][0])
+		#print("ergebnistyp:", ergebnistyp[0][0])
 		#print("runde:", runde)
 		
 		#platz = 1. Platz ganz oben
@@ -123,12 +123,12 @@ def get_punkte_pro_spiel_pro_turnier(turnierid, spielid):
 		query = 'select spiel.name, teilnehmer.nickname, td.ergebnistyp, td.runde, td.ergebnis from turnierdetails as td inner join teilnehmer on td.teilnehmerid = teilnehmer.teilnehmerid inner join spiel on td.spielid = spiel.spielid where td.turnierid={turnierid} and td.spielid={spielid} and td.runde={runde} order by td.runde, td.ergebnis;'.format(turnierid=turnierid, spielid=spielid, runde=runde)
 		gesamtergebnis.append(execute_select_query(query))
 
-		if ergebnistyp[0][0] == "kills" or ergebnistyp[0][0] == "Punkte":
-			print("gesamtergebnis kills/Punkte:", gesamtergebnis)
-		elif ergebnistyp[0][0] == "zeit" or ergebnistyp[0][0] == "platz":
-			print("gesamtergebnis zeit:", gesamtergebnis)
-		elif ergebnistyp[0][0] == "pvp":
-			print("gesamtergebnis pvp:", gesamtergebnis)
+		#if ergebnistyp[0][0] == "kills" or ergebnistyp[0][0] == "Punkte":
+		#	print("gesamtergebnis kills/Punkte:", gesamtergebnis)
+		#elif ergebnistyp[0][0] == "zeit" or ergebnistyp[0][0] == "platz":
+		#	print("gesamtergebnis zeit:", gesamtergebnis)
+		#elif ergebnistyp[0][0] == "pvp":
+		#	print("gesamtergebnis pvp:", gesamtergebnis)
 
 	return gesamtergebnis
 

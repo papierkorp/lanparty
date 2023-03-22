@@ -1,11 +1,11 @@
-from flask import render_template, flash, redirect, url_for, request, g
+from flask import render_template, flash, redirect, url_for, request
 from app import app
 from app.db.db import add_turnier, get_turniere_pro_spiel, get_turniere, get_ergebnistyp, get_runden_pro_spiel_pro_turnier, get_turniername, get_teilnehmer_pro_turnier, get_punkte_pro_spiel_pro_turnier, get_spielliste_pro_turnier, get_punkteliste, get_teilnehmerid, add_teilnehmer, get_all_teilnehmer, delete_teilnehmer, add_spiel, get_all_spiele, delete_spiel, get_spiel, create_tables, get_teilgenommene_turniere_pro_teilnehmer, edit_ergebnis
 from app.logik.gruppenerstellung import Gruppenerstellung
 from app.logik.ergebnisberechnung import Ergebnisberechnung
 import sqlite3
 import os
-from app.forms import TeilnehmerNeuForm, DeleteForm, SpielNeuForm, TurnierNeuForm, ErgebnisForm, ErgebnisAddRundeForm, ErgebnisDeleteRundeForm
+from app.forms import TeilnehmerNeuForm, DeleteForm, SpielNeuForm, TurnierNeuForm, ErgebnisForm
 
 #Ablauf
 # Neues Turnier
@@ -26,12 +26,33 @@ def turnier(turnierid):
 	punkteliste_pro_spiel = []
 	for i in spielliste_pro_turnier:
 		punkteliste_pro_spiel.append(get_punkte_pro_spiel_pro_turnier(turnierid=turnierid, spielid=i[0]))
-	#print(punkteliste_pro_spiel)
+	print("punktelistespiel", punkteliste_pro_spiel)
 	punkteliste_bearbeitet = Ergebnisberechnung(punkteliste_pro_spiel)
-	print("punkteliste_bearbeitet:", punkteliste_bearbeitet)
+	#print("punkteliste_bearbeitet:", punkteliste_bearbeitet)
 	return render_template('turnier.html', title="Turnier", punktelisteturnier=punkteliste_bearbeitet, punktelistespiel=punkteliste_pro_spiel, spielliste=spielliste_pro_turnier, turnierid=turnierid)
 
-@app.route('/turnier/<turnierid>/<spielname>', methods=["POST", "GET"])
+
+
+#punkteliste [
+#	[
+#		('Worms Armageddon', 'brandmeister', 'platz', 1, 1), 
+#		('Worms Armageddon', 'papierkorp', 'platz', 1, 2), 
+#		('Worms Armageddon', 'tobse', 'platz', 1, 3), 
+#		('Worms Armageddon', 'sancho', 'platz', 1, 4), 
+#		('Worms Armageddon', 'draham', 'platz', 1, 5)
+#	], 
+#	[
+#		('Worms Armageddon', 'papierkorp', 'platz', 2, 1), 
+#		('Worms Armageddon', 'sancho', 'platz', 2, 2), 
+#		('Worms Armageddon', 'draham', 'platz', 2, 3), 
+#		('Worms Armageddon', 'brandmeister', 'platz', 2, 4), 
+#		('Worms Armageddon', 'tobse', 'platz', 2, 5)
+#	]
+#]
+
+#{{form.ergform.teilnehmer(value=ergebnis[1], class="form_disabled")}}
+
+@app.route('/turnier/<turnierid>/<spielname>', methods=['GET', 'POST'])
 def ergebnis(turnierid, spielname):
 	ergebnistyp=["Kills", "Zeit", "Platz", "PvP", "Punkte"]
 	spiel = get_spiel(name=spielname)
@@ -40,28 +61,21 @@ def ergebnis(turnierid, spielname):
 	teilnehmerliste = get_teilnehmer_pro_turnier(turnierid)
 	anzahl_teilnehmer = len(teilnehmerliste)
 
-	form_erg = ErgebnisForm()
-	form_erg.ergebnistyp.choices = ergebnistyp
-	form_erg.ergebnistyp.default = get_ergebnistyp(turnierid=turnierid, spielid=spielid)[0][0]
-	form_erg.process([])
-	form_delete = ErgebnisDeleteRundeForm()
-	form_add = ErgebnisAddRundeForm()
-	
 	turniername = get_turniername(turnierid)
 	runden_pro_spiel = [i[0] for i in get_runden_pro_spiel_pro_turnier(spielid=spielid, turnierid=turnierid)]
-	form_delete.runden.choices = runden_pro_spiel
 	punkteliste = get_punkte_pro_spiel_pro_turnier(turnierid=turnierid, spielid=spielid)
+	anzahl_runden = len(punkteliste)
 
 	gruppen = Gruppenerstellung(Teilnehmerliste=teilnehmerliste, maxSpieler=maxspieler)
 
-	if form_erg.validate_on_submit():
-		teilnehmerid = get_teilnehmerid(form_erg.teilnehmer.data)
-		print("form_erg.runde.data", form_erg.runde.data)
-		print("teilnehmerid", teilnehmerid)
-		print("form_erg.runde.data", form_erg.runde.data)
-		flash(edit_ergebnis(turnierid=turnierid, spielid=spielid, teilnehmerid=teilnehmerid, runde=form_erg.runde.data, ergebnis=form_erg.ergebnis.data, ergebnistyp=""))
-	print("Punkteliste: ", punkteliste)
-	return render_template('ergebnis.html', title="Ergebnis", form_erg=form_erg, form_delete=form_delete, form_add=form_add, spielname=spielname, turniername=turniername, punkteliste=punkteliste)
+	#print("anzahl_runden", anzahl_runden)
+	#print("punkteliste", punkteliste)
+	form = ErgebnisForm(min_entries=anzahl_runden)
+	#form.ergebnistyp.choices = ergebnistyp
+	#form.ergebnistyp.default = get_ergebnistyp(turnierid=turnierid, spielid=spielid)[0][0]
+	#form.process([])
+
+	return render_template('ergebnis.html', title="Ergebnis", form=form, spielname=spielname, turniername=turniername, punkteliste=punkteliste)
 
 @app.route('/turnier_neu', methods=["POST", "GET"])
 def turnier_neu():

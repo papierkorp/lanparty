@@ -1,37 +1,19 @@
 {% extends "base.html" %}
 {% block app_content %}
 
-    <h1>{{turniername[0][0]}}: Ergebnis für {{spielname}}</h1>{{ ergebnistyp }}
+    <h1>{{turniername[0][0]}}: Ergebnis für {{spielname}} bearbeiten</h1>
 
-    <p><form action="" method="post" novalidate id="myForm_edit">{{form_add.nur_fuer_label.label}} {{form_add.submit}}</form></p>
-    
-    <p><form action="" method="post" novalidate id="myForm_edit">{{form_delete.runden.label}} {{form_delete.runden}} {{form_delete.submit}}</form></p>
-
+   
     <p><form action="" method="post" novalidate id="myForm_edit">
-    {{ form_erg.hidden_tag()}}
-        <p>{{form_erg.ergebnistyp.label}} {{ form_erg.ergebnistyp}}</p>
-        
+    {{ form.hidden_tag()}}
 
-        <p><table class="myTable">
-            <thead>
-                <tr>
-                    <th>Teilnehmer</th>
-                    <th>Runde</th>
-                    <th>Ergebnis</th>
-                </tr>
-            </thead>
-        {% for spiel in punkteliste %}
-            {% for ergebnis in spiel %}
-                    <tr>
-                        <td>{{form_erg.teilnehmer(value=ergebnis[1], class="form_disabled")}}</td>
-                        <td>{{form_erg.runde(value=ergebnis[3], class="form_disabled")}}</td>
-                        <td class="input_edit">{{form_erg.ergebnis(value=ergebnis[4])}}</td>
-                    </tr>
-            {% endfor %}
-        {% endfor %}
+        Runde bearbeiten: (select 1..2..3..4)<br>
+        Runde hinzufügen: (Input)<br>
+        Runde löschen: (Button)<br>
+        Punktetyp hinzufügen: (select ...)<br>
+        Submit<br>
 
-    </table></p>
-    <p>{{ form_erg.submit }}</p>
+    <p>{{ form.submit }}</p>
     </form></p>
 
 {% endblock %}
