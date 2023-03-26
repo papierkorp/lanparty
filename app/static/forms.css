@@ -42,7 +42,7 @@
 #myForm_add select {
 }
 
-#myForm_edit select {
+#myForm_edit select, #myForm_edit input {
     width: fit-content;
 }
 

@@ -82,8 +82,8 @@ def get_all_spiele():
 	query = 'select name, typ, maxspieler from spiel;'
 	return execute_select_query(query)
 
-def get_ergebnistyp(turnierid, spielid):
-	query = 'select distinct(ergebnistyp) from turnierdetails where turnierid={turnierid} and spielid={spielid};'.format(turnierid=turnierid, spielid=spielid)
+def get_ergebnistyp(turnierid, spielid, runde):
+	query = 'select distinct(ergebnistyp) from turnierdetails where turnierid={turnierid} and spielid={spielid} and runde={runde};'.format(turnierid=turnierid, spielid=spielid, runde=runde)
 	return execute_select_query(query)
 
 def get_spiel(name):

@@ -28,10 +28,5 @@ class ErgebnisInputForm(FlaskForm):
     teilnehmer=StringField('Teilnehmer', render_kw={"placeholder": "Teilnehmer", "disabled":"disabled"})
 
 class ErgebnisForm(FlaskForm):
-    ergebis=FieldList(FormField(ErgebnisInputForm, default=lambda: ErgebnisInputForm()), min_entries=1)
+    ergebnislist=FieldList(FormField(ErgebnisInputForm))
     submit = SubmitField('Ergebnis abschicken')
-
-    def __init__(self, *args, **kwargs):
-        super(ErgebnisForm, self).__init__(*args, **kwargs)
-        if 'min_entries' in kwargs:
-            self.ergebis.min_entries = kwargs['min_entries']

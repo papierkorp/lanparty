@@ -3,9 +3,12 @@ from app import app
 from app.db.db import add_turnier, get_turniere_pro_spiel, get_turniere, get_ergebnistyp, get_runden_pro_spiel_pro_turnier, get_turniername, get_teilnehmer_pro_turnier, get_punkte_pro_spiel_pro_turnier, get_spielliste_pro_turnier, get_punkteliste, get_teilnehmerid, add_teilnehmer, get_all_teilnehmer, delete_teilnehmer, add_spiel, get_all_spiele, delete_spiel, get_spiel, create_tables, get_teilgenommene_turniere_pro_teilnehmer, edit_ergebnis
 from app.logik.gruppenerstellung import Gruppenerstellung
 from app.logik.ergebnisberechnung import Ergebnisberechnung
+import urllib.parse
 import sqlite3
 import os
 from app.forms import TeilnehmerNeuForm, DeleteForm, SpielNeuForm, TurnierNeuForm, ErgebnisForm
+
+#encoded_name = urllib.parse.quote(name)
 
 #Ablauf
 # Neues Turnier
@@ -18,7 +21,7 @@ from app.forms import TeilnehmerNeuForm, DeleteForm, SpielNeuForm, TurnierNeuFor
 def index():
 	return render_template('index.html')
 
-@app.route('/turnier/<turnierid>')
+@app.route('/turnier/<turnierid>', methods=['GET', 'POST'])
 def turnier(turnierid):
 	spielliste_pro_turnier = get_spielliste_pro_turnier(turnierid)
 	punkteliste = get_punkteliste(turnierid)
@@ -29,6 +32,7 @@ def turnier(turnierid):
 	print("punktelistespiel", punkteliste_pro_spiel)
 	punkteliste_bearbeitet = Ergebnisberechnung(punkteliste_pro_spiel)
 	#print("punkteliste_bearbeitet:", punkteliste_bearbeitet)
+
 	return render_template('turnier.html', title="Turnier", punktelisteturnier=punkteliste_bearbeitet, punktelistespiel=punkteliste_pro_spiel, spielliste=spielliste_pro_turnier, turnierid=turnierid)
 
 
@@ -50,11 +54,9 @@ def turnier(turnierid):
 #	]
 #]
 
-#{{form.ergform.teilnehmer(value=ergebnis[1], class="form_disabled")}}
-
 @app.route('/turnier/<turnierid>/<spielname>', methods=['GET', 'POST'])
 def ergebnis(turnierid, spielname):
-	ergebnistyp=["Kills", "Zeit", "Platz", "PvP", "Punkte"]
+	ergebnistyp=["kills", "zeit", "platz", "pvp", "punkte"]
 	spiel = get_spiel(name=spielname)
 	spielid = spiel[0][0]
 	maxspieler = spiel[0][3]
@@ -65,17 +67,28 @@ def ergebnis(turnierid, spielname):
 	runden_pro_spiel = [i[0] for i in get_runden_pro_spiel_pro_turnier(spielid=spielid, turnierid=turnierid)]
 	punkteliste = get_punkte_pro_spiel_pro_turnier(turnierid=turnierid, spielid=spielid)
 	anzahl_runden = len(punkteliste)
+	anzahl_form = len(punkteliste[0][0]) * anzahl_runden
 
 	gruppen = Gruppenerstellung(Teilnehmerliste=teilnehmerliste, maxSpieler=maxspieler)
+	form = ErgebnisForm(ergebnislist=[{} for _ in range(anzahl_form)])
 
-	#print("anzahl_runden", anzahl_runden)
-	#print("punkteliste", punkteliste)
-	form = ErgebnisForm(min_entries=anzahl_runden)
-	#form.ergebnistyp.choices = ergebnistyp
-	#form.ergebnistyp.default = get_ergebnistyp(turnierid=turnierid, spielid=spielid)[0][0]
-	#form.process([])
+	for index, ergebnistyp_form in enumerate(form.ergebnislist):
+		ergebnistyp_form.ergebnistyp.choices = ergebnistyp
 
-	return render_template('ergebnis.html', title="Ergebnis", form=form, spielname=spielname, turniername=turniername, punkteliste=punkteliste)
+	for i in range(anzahl_runden):
+		ergebnistyp_form.ergebnistyp.default = get_ergebnistyp(turnierid=turnierid, spielid=spielid, runde=i+1)[0][0]
+		#funktioniert ned
+
+
+	formdata = request.form
+	print("formdata", formdata)
+	if form.validate_on_submit():
+		print("pleaaaaaaaaase")
+		name = form.name.data
+		print("name", name)
+		for address in form.addresses:
+			print ("address", address)
+	return render_template('ergebnis.html', title="Ergebnis", form=form, turnierid=turnierid, spielname=spielname, turniername=turniername, punkteliste=punkteliste)
 
 @app.route('/turnier_neu', methods=["POST", "GET"])
 def turnier_neu():

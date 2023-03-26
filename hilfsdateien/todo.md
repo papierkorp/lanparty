@@ -21,6 +21,7 @@
   - Turnier - neu - Spielauswahl hinzufügen?
   - ergebnistyp wird mehrmals definiert
   - Turnier - Übersicht: Rundenausgabe pro Spiel überarbeiten
+  - Ergebnis als json/yaml übergeben
 - Teilnehmer
   - Teilnehmer - xxx - Turniernamelink
   - Teilnehmer bearbeiten (Name + Nickname ändern)

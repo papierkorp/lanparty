@@ -3,19 +3,54 @@
 
     <h1>{{turniername[0][0]}}: Ergebnis für {{spielname}} bearbeiten</h1>
 
-   
-    <p><form action="" method="post" novalidate id="myForm_edit">
-    {{ form.hidden_tag()}}
+    <ul>
+        <li>Button: Add Round</li>
+        <li>Button: Delete Round</li>
+    </ul>
 
-        Runde bearbeiten: (select 1..2..3..4)<br>
-        Runde hinzufügen: (Input)<br>
-        Runde löschen: (Button)<br>
-        Punktetyp hinzufügen: (select ...)<br>
-        Submit<br>
+    <form action="{{ url_for('ergebnis', turnierid=turnierid, spielname=spielname) }}" method="POST" novalidate id="myForm_edit">
+    {{ form.hidden_tag() }}
+    <div>
 
-    <p>{{ form.submit }}</p>
-    </form></p>
+    </div>
+    <div>
+        {% for runde in punkteliste %}
+            {% set i = loop.index0 %}
+
+            <p>{{ form.ergebnislist[i + loop.index0].runde.label }} {{form.ergebnislist[i + loop.index0].runde(value=runde[i][3], class="form_disabled")}}</p>
+            
+            <p>{{ form.ergebnislist[i + loop.index0].ergebnistyp.label }} {{form.ergebnislist[i + loop.index0].ergebnistyp(default=runde[i][2])}} (todo value: {{runde[i][2]}})</p>
+
+            <p><table class="myTable">
+                <thead>
+                    <tr>
+                        <th>Teilnehmer</th>
+                        <th>Ergebnis</th>
+                    </tr>
+                </thead>
+
+            
+            {% for ergebnis in runde %}
+                <tr>
+                    <td>{{form.ergebnislist[i + loop.index0].teilnehmer(value=ergebnis[1], class="form_disabled")}}</td>
+                    <td class="input_edit">{{form.ergebnislist[i + loop.index0].ergebnis(value=ergebnis[4])}}</td>
+                </tr>
+            {% endfor %}
+
+            </table></p>
+        {% endfor %}
+
+    
+
+    </div>
+    <div>
+        {{ form.submit() }}
+    </div>
+</form>
+
+<br /><br/><br/><br/>
+
+{{ punkteliste }}
+    
 
 {% endblock %}
-
-

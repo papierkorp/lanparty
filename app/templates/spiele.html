@@ -14,7 +14,7 @@
             </thead>
             {% for spiel in alle_spiele %}
                 <tr>
-                    <td><a href="{{ url_for("spiel", spiel=spiel[0]) }}">{{ spiel[0] }}</a></td>
+                    <td><a href="{{ url_for('spiel', spiel=spiel[0]) }}">{{ spiel[0] }}</a></td>
                     <td>{{ spiel[1] }}</td>
                     <td>{{ spiel[2]}}</td>
                 </tr>
