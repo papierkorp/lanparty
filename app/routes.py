@@ -55,7 +55,7 @@ def turnier(turnierid):
 #]
 
 
-@app.route('/turnier/<turnierid>/<spielname>', methods=['GET', 'POST'])
+@app.route('/turnier/<turnierid>/<spielname>', methods=['POST'])
 def ergebnis(turnierid, spielname):
 	ergebnistyp=["kills", "zeit", "platz", "pvp", "punkte"]
 	spiel = get_spiel(name=spielname)
@@ -95,8 +95,7 @@ def ergebnis(turnierid, spielname):
 	formdata = request.form
 	print("formdata", formdata)
 
-	#if form.validate_on_submit():
-	if request.method == 'POST' and form.validate():
+	if form.validate_on_submit():
 		print("pleaaaaaaaaase")
 		name = form.name.data
 		print("name", name)
