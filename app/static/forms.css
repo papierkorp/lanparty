@@ -81,3 +81,8 @@
     background-color: darkgrey;
     border: 0;
 }
+
+.hide_me {
+    display: none;
+    visibility: hidden;
+}

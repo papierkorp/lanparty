@@ -10,13 +10,14 @@
 
     <form action="{{ url_for('ergebnis', turnierid=turnierid, spielname=spielname) }}" method="POST" novalidate id="myForm_edit">
     {{ form.hidden_tag() }}
-    {{ form.csrf_token }}
     <div>
 
     </div>
     <div>
         {% for runde in punkteliste %}
             {% set i = loop.index0 %}
+
+            <!-- # Runde + Ergebnistyp läuft nur 2x wegen loop..................... ich depp -->
 
             <p>{{ form.ergebnislist[i + loop.index0].runde.label }} {{form.ergebnislist[i + loop.index0].runde(value=runde[i][3], class="form_disabled")}}</p>
             
@@ -35,6 +36,7 @@
                 <tr>
                     <td>{{form.ergebnislist[i + loop.index0].teilnehmer(value=ergebnis[1], class="form_disabled")}}</td>
                     <td class="input_edit">{{form.ergebnislist[i + loop.index0].ergebnis(value=ergebnis[4])}}</td>
+                    <td>{{form.ergebnislist[i + loop.index0].runde(value=runde[i][3], class="form_disabled")}}</td>
                 </tr>
             {% endfor %}
 
@@ -51,7 +53,11 @@
 
 <br /><br/><br/><br/>
 
+<h3>Punkteliste (debugging)</h3>
 {{ punkteliste }}
-    
-
+{% for i in punkteliste %}
+    {% for j in i %}
+        <p>{{ j }}</p>
+    {% endfor %}
+{% endfor %}
 {% endblock %}

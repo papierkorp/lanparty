@@ -55,7 +55,7 @@ def turnier(turnierid):
 #]
 
 
-@app.route('/turnier/<turnierid>/<spielname>', methods=['POST'])
+@app.route('/turnier/<turnierid>/<spielname>', methods=['POST', 'GET'])
 def ergebnis(turnierid, spielname):
 	ergebnistyp=["kills", "zeit", "platz", "pvp", "punkte"]
 	spiel = get_spiel(name=spielname)
@@ -76,31 +76,43 @@ def ergebnis(turnierid, spielname):
 	for index, ergebnistyp_form in enumerate(form.ergebnislist):
 		ergebnistyp_form.ergebnistyp.choices = ergebnistyp
 
-	for i in range(anzahl_runden):
-		ergebnistyp_form.ergebnistyp.default = get_ergebnistyp(turnierid=turnierid, spielid=spielid, runde=i+1)[0][0]
-		#funktioniert ned
+	#for i in range(anzahl_runden):
+	#	ergebnistyp_form.ergebnistyp.default = get_ergebnistyp(turnierid=turnierid, spielid=spielid, runde=i+1)[0][0]
+	#	#funktioniert ned
 
 	print("--------------------------------------------------------------------------------------")
 	print("--------------------------------------------------------------------------------------")
 	print("--------------------------------------------------------------------------------------")
-	print("form.errors", form.errors
+	print("punkteliste", punkteliste)
+	print("----- punkteliste -----")
+	for i in punkteliste:
+		for j in i:
+			print(j)
+			print('..................')
+	print("form.errors", form.errors)
 	print("form.validate", form.validate())
-	print("form.validate_on_submit()", form.validate_on_submit(), bool(form.validate_on_submit()))
-	print("form.data", form.data)
+	print("form.validate_on_submit()", form.validate_on_submit(),)
 	print("request.method == 'POST'", request.method == 'POST')
+	print("form.data", form.data)
+	print("----- form.data -----")
+	for ergebnis in form.data['ergebnislist']:
+	    print('ergebnistyp: ', ergebnis['ergebnistyp'])
+	    print('runde: ', ergebnis['runde'])
+	    print('ergebnis: ', ergebnis['ergebnis'])
+	    print('teilnehmer: ', ergebnis['teilnehmer'])
+	    print('..................')
 	print("--------------------------------------------------------------------------------------")
 	print("--------------------------------------------------------------------------------------")
 	print("--------------------------------------------------------------------------------------")
 
-	formdata = request.form
-	print("formdata", formdata)
+	#formdata = request.form
+	#print("formdata", formdata)
 
 	if form.validate_on_submit():
 		print("pleaaaaaaaaase")
 		name = form.name.data
 		print("name", name)
-		for address in form.addresses:
-			print ("address", address)
+
 	return render_template('ergebnis.html', title="Ergebnis", form=form, turnierid=turnierid, spielname=spielname, turniername=turniername, punkteliste=punkteliste)
 
 @app.route('/turnier_neu', methods=["POST", "GET"])
