@@ -37,7 +37,7 @@ def turnier(turnierid):
 
 
 
-#punkteliste [
+#punkteliste = [
 #	[
 #		('Worms Armageddon', 'brandmeister', 'platz', 1, 1), 
 #		('Worms Armageddon', 'papierkorp', 'platz', 1, 2), 
@@ -70,11 +70,18 @@ def ergebnis(turnierid, spielname):
 	anzahl_runden = len(punkteliste)
 	anzahl_form = len(punkteliste[0][0]) * anzahl_runden
 
+	print(anzahl_runden)
+	print(anzahl_form)
+
 	gruppen = Gruppenerstellung(Teilnehmerliste=teilnehmerliste, maxSpieler=maxspieler)
 	form = ErgebnisForm(ergebnislist=[{} for _ in range(anzahl_form)])
+	#form = ErgebnisForm(ergebnislist=[[{} for _ in range(anzahl_form)] for _ in range(runden)])
 
-	for index, ergebnistyp_form in enumerate(form.ergebnislist):
-		ergebnistyp_form.ergebnistyp.choices = ergebnistyp
+	print("form", form.ergebnislist)
+
+	form.ergebnistyp.choices = ergebnistyp
+	#for index, ergebnistyp_form in enumerate(form.ergebnislist):
+	#	ergebnistyp_form.ergebnistyp.choices = ergebnistyp
 
 	#for i in range(anzahl_runden):
 	#	ergebnistyp_form.ergebnistyp.default = get_ergebnistyp(turnierid=turnierid, spielid=spielid, runde=i+1)[0][0]
@@ -96,8 +103,8 @@ def ergebnis(turnierid, spielname):
 	print("form.data", form.data)
 	print("----- form.data -----")
 	for ergebnis in form.data['ergebnislist']:
-	    print('ergebnistyp: ', ergebnis['ergebnistyp'])
-	    print('runde: ', ergebnis['runde'])
+	    #print('ergebnistyp: ', ergebnis['ergebnistyp'])
+	    #print('runde: ', ergebnis['runde'])
 	    print('ergebnis: ', ergebnis['ergebnis'])
 	    print('teilnehmer: ', ergebnis['teilnehmer'])
 	    print('..................')
@@ -112,9 +119,10 @@ def ergebnis(turnierid, spielname):
 		print("pleaaaaaaaaase")
 		print(form.ergebnislist.data)
 		data = request.form.getlist('ergebnislist')
-		print(data)
+		print("data", data)
+		print("form.data", form.data)
 
-	return render_template('ergebnis.html', title="Ergebnis", form=form, turnierid=turnierid, spielname=spielname, turniername=turniername, punkteliste=punkteliste)
+	return render_template('ergebnis.html', title="Ergebnis", form=form, turnierid=turnierid, spielname=spielname, turniername=turniername, punkteliste=punkteliste, enumerate=enumerate)
 
 @app.route('/turnier_neu', methods=["POST", "GET"])
 def turnier_neu():

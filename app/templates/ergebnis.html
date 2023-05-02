@@ -12,41 +12,30 @@
     {{ form.hidden_tag() }}
     <div>
 
-    </div>
-    <div>
-        {% for runde in punkteliste %}
-            {% set i = loop.index0 %}
-
-            <!-- # Runde + Ergebnistyp läuft nur 2x wegen loop..................... ich depp -->
-
-            <p>{{ form.ergebnislist[i].runde.label }} {{form.ergebnislist[i].runde(value=runde[i][3], class="form_disabled")}}</p>
-            
-            <p>{{ form.ergebnislist[i].ergebnistyp.label }} {{form.ergebnislist[i].ergebnistyp(default=runde[i][2])}} (todo value: {{runde[i][2]}})</p>
-
-                <p>loop.index0: {{ loop.index0 }} i: {{ i }}</p>
-
-            <p><table class="myTable">
-                <thead>
-                    <tr>
-                        <th>Teilnehmer</th>
-                        <th>Ergebnis</th>
-                    </tr>
-                </thead>
-
-            
-            {% for ergebnis in runde %}
-                <tr>
-                    <td>{{form.ergebnislist[i + loop.index0].teilnehmer(value=ergebnis[1], class="form_disabled")}}</td>
-                    <td class="input_edit">{{form.ergebnislist[i].ergebnis(value=ergebnis[4])}}</td>
-                    <span class="hide_me">{{form.ergebnislist[i].runde(value=runde[i][3])}}</span>
-                    <span class="hide_me">{{form.ergebnislist[i].ergebnistyp(default=runde[i][2])}}</span>
-                </tr>
-            {% endfor %}
-
-            </table></p>
-        {% endfor %}
-
+    {{ form.ergebnislist }}
     
+    {% for form_field in form.ergebnislist %}
+        {% set form_index = loop.index0 %}
+        {{ [form_index]  }}
+        {{ form.runde.label }} {{ punkteliste[form_index]}}
+
+        <table class="myTable">
+            <thead>
+                <tr>
+                    <th>Teilnehmer</th>
+                    <th>Ergebnis</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ }}</td>
+                    <td >{{ }}</td>
+                </tr>
+            </tbody>
+        </table>
+    {% endfor %}
+
+
 
     </div>
     <div>
@@ -64,3 +53,4 @@
     {% endfor %}
 {% endfor %}
 {% endblock %}
+
