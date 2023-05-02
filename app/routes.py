@@ -110,8 +110,9 @@ def ergebnis(turnierid, spielname):
 
 	if form.validate_on_submit():
 		print("pleaaaaaaaaase")
-		name = form.name.data
-		print("name", name)
+		print(form.ergebnislist.data)
+		data = request.form.getlist('ergebnislist')
+		print(data)
 
 	return render_template('ergebnis.html', title="Ergebnis", form=form, turnierid=turnierid, spielname=spielname, turniername=turniername, punkteliste=punkteliste)
 
