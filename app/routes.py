@@ -66,22 +66,21 @@ def ergebnis(turnierid, spielname):
 
 	turniername = get_turniername(turnierid)
 	runden_pro_spiel = [i[0] for i in get_runden_pro_spiel_pro_turnier(spielid=spielid, turnierid=turnierid)]
-	punkteliste = get_punkte_pro_spiel_pro_turnier(turnierid=turnierid, spielid=spielid)
-	anzahl_runden = len(punkteliste)
-	anzahl_form = len(punkteliste[0][0]) * anzahl_runden
-
-	print(anzahl_runden)
-	print(anzahl_form)
+	punkteliste_db = get_punkte_pro_spiel_pro_turnier(turnierid=turnierid, spielid=spielid)
+	punkteliste=[]
+	for runde in punkteliste_db:
+		punkteliste += runde
+	#todo: sql statement ändern statt hier?
+	anzahl_einträge = len(punkteliste)
+	anzahl_teilnehmer = len(punkteliste_db[0])
 
 	gruppen = Gruppenerstellung(Teilnehmerliste=teilnehmerliste, maxSpieler=maxspieler)
-	form = ErgebnisForm(ergebnislist=[{} for _ in range(anzahl_form)])
+	form = ErgebnisForm(ergebnislist=[{} for _ in range(anzahl_einträge)])
 	#form = ErgebnisForm(ergebnislist=[[{} for _ in range(anzahl_form)] for _ in range(runden)])
 
-	print("form", form.ergebnislist)
-
-	form.ergebnistyp.choices = ergebnistyp
-	#for index, ergebnistyp_form in enumerate(form.ergebnislist):
-	#	ergebnistyp_form.ergebnistyp.choices = ergebnistyp
+	#form.ergebnistyp.choices = ergebnistyp
+	for index, ergebnistyp_form in enumerate(form.ergebnislist):
+		ergebnistyp_form.ergebnistyp.choices = ergebnistyp
 
 	#for i in range(anzahl_runden):
 	#	ergebnistyp_form.ergebnistyp.default = get_ergebnistyp(turnierid=turnierid, spielid=spielid, runde=i+1)[0][0]
@@ -93,21 +92,13 @@ def ergebnis(turnierid, spielname):
 	print("punkteliste", punkteliste)
 	print("----- punkteliste -----")
 	for i in punkteliste:
-		for j in i:
-			print(j)
-			print('..................')
+		print(i)
+		print('..................')
 	print("form.errors", form.errors)
 	print("form.validate", form.validate())
 	print("form.validate_on_submit()", form.validate_on_submit(),)
 	print("request.method == 'POST'", request.method == 'POST')
 	print("form.data", form.data)
-	print("----- form.data -----")
-	for ergebnis in form.data['ergebnislist']:
-	    #print('ergebnistyp: ', ergebnis['ergebnistyp'])
-	    #print('runde: ', ergebnis['runde'])
-	    print('ergebnis: ', ergebnis['ergebnis'])
-	    print('teilnehmer: ', ergebnis['teilnehmer'])
-	    print('..................')
 	print("--------------------------------------------------------------------------------------")
 	print("--------------------------------------------------------------------------------------")
 	print("--------------------------------------------------------------------------------------")
@@ -118,11 +109,16 @@ def ergebnis(turnierid, spielname):
 	if form.validate_on_submit():
 		print("pleaaaaaaaaase")
 		print(form.ergebnislist.data)
-		data = request.form.getlist('ergebnislist')
-		print("data", data)
 		print("form.data", form.data)
+		print("----- form.data -----")
+		for ergebnis in form.data['ergebnislist']:
+		    print('ergebnistyp: ', ergebnis['ergebnistyp'])
+		    print('runde: ', ergebnis['runde'])
+		    print('ergebnis: ', ergebnis['ergebnis'])
+		    print('teilnehmer: ', ergebnis['teilnehmer'])
+		    print('..................')
 
-	return render_template('ergebnis.html', title="Ergebnis", form=form, turnierid=turnierid, spielname=spielname, turniername=turniername, punkteliste=punkteliste, enumerate=enumerate)
+	return render_template('ergebnis.html', title="Ergebnis", form=form, turnierid=turnierid, spielname=spielname, turniername=turniername, punkteliste=punkteliste, enumerate=enumerate, anzahl_teilnehmer=anzahl_teilnehmer)
 
 @app.route('/turnier_neu', methods=["POST", "GET"])
 def turnier_neu():

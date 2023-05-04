@@ -12,45 +12,63 @@
     {{ form.hidden_tag() }}
     <div>
 
-    {{ form.ergebnislist }}
-    
+    {% set ns=namespace(runde=1) %}
+
     {% for form_field in form.ergebnislist %}
         {% set form_index = loop.index0 %}
-        {{ [form_index]  }}
-        {{ form.runde.label }} {{ punkteliste[form_index]}}
+        {% set indexfrom1 = loop.index %}
 
-        <table class="myTable">
-            <thead>
-                <tr>
-                    <th>Teilnehmer</th>
-                    <th>Ergebnis</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ }}</td>
-                    <td >{{ }}</td>
-                </tr>
-            </tbody>
-        </table>
+            {{ ns.runde }} - {{ indexfrom1 }} - {{ anzahl_teilnehmer }} - {{ form_index+anzahl_teilnehmer }}
+
+            {% if ns.runde == indexfrom1 %}
+
+                <p>{{form_field.runde.label}} {{form_field.runde(value=punkteliste[form_index+anzahl_teilnehmer-1][3], class="form_disabled")}}</p>
+                <p>{{form_field.ergebnistyp.label}} {{form_field.ergebnistyp(value=punkteliste[form_index+anzahl_teilnehmer-1][2])}}</p>
+            
+            {% endif %}
+            {% if ns.runde == 1 %}
+
+                <table class="myTable">
+                    <thead>
+                        <tr>
+                            <th>Teilnehmer</th>
+                            <th>Ergebnis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+            {% endif %}
+            
+                <p>Test: {{ ns.runde }}</p>
+                    <tr>
+                        <td>{{form_field.teilnehmer(value=punkteliste[form_index][1], class="form_disabled")}}</td>
+                        <td>{{form_field.ergebnis(value=punkteliste[form_index][4])}}</td>
+                    </tr>
+
+
+            {% if ns.runde == 1 %}
+                    </tbody>
+                </table>
+
+                
+                {% set ns.runde = ns.runde+1 %}
+
+            {% endif %}
     {% endfor %}
-
 
 
     </div>
     <div>
         {{ form.submit() }}
     </div>
-</form>
+    </form>
 
 <br /><br/><br/><br/>
 
 <h3>Punkteliste (debugging)</h3>
 {{ punkteliste }}
 {% for i in punkteliste %}
-    {% for j in i %}
-        <p>{{ j }}</p>
-    {% endfor %}
+    <p>{{ i }}</p>
 {% endfor %}
 {% endblock %}
 
