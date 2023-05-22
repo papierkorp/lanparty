@@ -1,6 +1,5 @@
 # havetodo
-- Turnier - Übersicht - xxx - Spiel hinzufügen
-- Turnier - Übersicht - xxx - Spiel - Ergebnis hinzufügen (mit spiel / runde hinzufügen erledigen, d.H. 1 Runde mit ergebnis 0 hinzu)
+- Turnier - Übersicht - xxx - Spiel - Turnierbaum erstellen
 - Turnierdetails - Punkteliste - Gesamtpunkteauswertung (Ergebnisberechnung): zwei spieler mit selbem ergebnis werden noch nicht berücksichtigt
 - Turnierdetails - Punkteliste - Gesamtpunkteauswertung (Ergebnisberechnung): "punkte" einbauen
 
@@ -37,7 +36,13 @@
   - Navigation von reinem CSS weg und ne Python Lösung finden? (ist halt schon witzig mit reinem css :D)
   - irgendwas für Startseite einfallen lassen
   - disabled form style (ergebnis.html > forms.css > #myForm_edit .form_disabled )
+  - Turnier - xxx Game hinzufügen/löschen Form überarbeiten
 - Datenbank
   - DB - Tabelle Turnier - das Feld Teilnehmer in Sieger umbennenen
   - funktion edit_ergebnis = spielid und turnierid durch namen ersetzen
   - funktion get_punkte_pro_spiel_pro_turnier = nach name sortieren..
+  - DB aufsplitten in mehrere Dateien?
+  - teilnehmer spalte in turnier Tabelle nötig?
+Optimierungen
+  - Ergebnis bearbeiten - nur für Änderungen eine Abfrage ausführen und nicht für alles
+  - Ergebnis bearbeiten - spielid übergeben und nicht einzeln abfragen

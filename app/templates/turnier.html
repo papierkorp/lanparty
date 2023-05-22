@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block app_content %}
 
-    <h1></h1>
+    <h1>Turnier - {{turniername}}</h1>
 
     <h2>Punkteliste:</h2>
 
@@ -19,6 +19,14 @@
         </tr>
     {% endfor %} 
     </table>
+
+    <h2>Turnier bearbeiten</h2>
+        <form action="{{ url_for('turnier', turnierid=turnierid) }}" method="POST" novalidate>
+            <div>
+                <p> {{ form.addgame }} - {{ form.gamelist_to_add }}</p>
+                <p> {{ form.deletegame }} - {{ form.gamelist_to_delete }} </p>
+            </div>
+        </form>
 
     <h2>Aktuelle Spielliste:</h2>
 

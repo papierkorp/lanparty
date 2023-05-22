@@ -46,7 +46,7 @@ def Ergebnisberechnung(punkteliste):
         'pvp': False,
         'Punkte': False,
     }
-
+    print("punkteliste", punkteliste)
     punkte_gesamt = defaultdict(int)
 
     for spiel in punkteliste:
