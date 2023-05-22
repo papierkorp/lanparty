@@ -1,0 +1,2 @@
+FLASK_APP=lan.py
+FLASK_DEBUG=1

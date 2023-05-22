@@ -1,10 +1,6 @@
 # havetodo
 - Turnier - Übersicht - xxx - Spiel hinzufügen
-- Turnier - Übersicht - xxx - Spiel - Ergebnis hinzufügen
-- Turnier - Übersicht - xxx - Spiel - Ergebnis bearbeiten
-  - Weitere Runde hinzufügen
-  - Vorhandene Runde löschen
-  - Ergebnis eintragen
+- Turnier - Übersicht - xxx - Spiel - Ergebnis hinzufügen (mit spiel / runde hinzufügen erledigen, d.H. 1 Runde mit ergebnis 0 hinzu)
 - Turnierdetails - Punkteliste - Gesamtpunkteauswertung (Ergebnisberechnung): zwei spieler mit selbem ergebnis werden noch nicht berücksichtigt
 - Turnierdetails - Punkteliste - Gesamtpunkteauswertung (Ergebnisberechnung): "punkte" einbauen
 
@@ -13,6 +9,8 @@
 - Allgemein
   - route File refactore lul
   - Tests
+  - Variablen Namen / Funktionsnamen - auf englisch oder deutsch festlegen und kein mix
+  - Logit aus routes.py rausnehmen?
 - Turnier
   - Turnier - Übersicht - xxx -Punkteliste pro Spiel
   - Turnier - Übersicht - xxx - Platzierung
@@ -22,6 +20,8 @@
   - ergebnistyp wird mehrmals definiert
   - Turnier - Übersicht: Rundenausgabe pro Spiel überarbeiten
   - Ergebnis als json/yaml übergeben
+  - Turnier - Übersicht - xxx - Runde löschen, bei Ergebnisausgabe gibts noch nen Hack, wenn eine Runde in der Mitte gelöscht wird, sind maximal 5 Runden unterschied zulässig...
+  - Turnier - Übersicht - xxx - Runde hinzufügen, evtl. statt letzte Runde + 1, raussuchen ob es leere Runden dazwischen gibt? (spricht eigt. gegen Integrität höhö)
 - Teilnehmer
   - Teilnehmer - xxx - Turniernamelink
   - Teilnehmer bearbeiten (Name + Nickname ändern)

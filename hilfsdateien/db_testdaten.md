@@ -338,6 +338,20 @@ insert into turnierdetails(turnierid, spielid, teilnehmerid, runde, ergebnis, er
 ---------------------------------------------------------------------------
 
 ```sql
+select " ";
+select "------------------------------------------------------------";
+select "-------------------TURNIERDETAILS---------------------------";
+select "turnierdetailsid|turnierid|spielid|teilnehmerid|runde|ergebnistyp|ergebnis";
+
+select * from turnierdetails where turnierid=2;
+
+
+select "------------------------------------------------------------";
+select "------------------------------------------------------------";
+select "------------------------------------------------------------";
+```
+
+```sql
 select "------------------------------------------------------------";
 select "teilnehmer--------";pragma table_info('teilnehmer');select * from teilnehmer;
 select "------------------------------------------------------------";

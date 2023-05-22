@@ -12,7 +12,7 @@ table.myTable td, table.myTable th {
 }
 table.myTable tbody td {
   font-size: 20px;
-  padding-left: 20px;
+  padding: 5px;
 }
 table.myTable tr:nth-child(even) {
   background: #DDDDDD;

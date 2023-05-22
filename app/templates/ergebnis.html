@@ -3,31 +3,35 @@
 
     <h1>{{turniername[0][0]}}: Ergebnis für {{spielname}} bearbeiten</h1>
 
-    <ul>
-        <li>Button: Add Round</li>
-        <li>Button: Delete Round</li>
-    </ul>
-
     <form action="{{ url_for('ergebnis', turnierid=turnierid, spielname=spielname) }}" method="POST" novalidate id="myForm_edit">
     {{ form.hidden_tag() }}
+
     <div>
 
+    <p> {{ form.addround }} </p>
+    <p> {{ form.deleteround }} - {{ form.rounds }} </p>
+
+    
     {% set ns=namespace(runde=1) %}
 
     {% for form_field in form.ergebnislist %}
-        {% set form_index = loop.index0 %}
+        
+        {% set indexfrom0 = loop.index0 %}
         {% set indexfrom1 = loop.index %}
 
-            {{ ns.runde }} - {{ indexfrom1 }} - {{ anzahl_teilnehmer }} - {{ form_index+anzahl_teilnehmer }}
-
-            {% if ns.runde == indexfrom1 %}
-
-                <p>{{form_field.runde.label}} {{form_field.runde(value=punkteliste[form_index+anzahl_teilnehmer-1][3], class="form_disabled")}}</p>
-                <p>{{form_field.ergebnistyp.label}} {{form_field.ergebnistyp(value=punkteliste[form_index+anzahl_teilnehmer-1][2])}}</p>
-            
+            {% if loop.first %}
+                <p>{{form.ergebnistyp.label}} {{form.ergebnistyp(value=punkteliste[indexfrom0][2])}}</p>
             {% endif %}
-            {% if ns.runde == 1 %}
 
+            {% if loop.first or ns.runde == punkteliste[indexfrom0][3] or ns.runde+1 == punkteliste[indexfrom0][3] or ns.runde+2 == punkteliste[indexfrom0][3] or ns.runde+3 == punkteliste[indexfrom0][3] or ns.runde+4 == punkteliste[indexfrom0][3] or ns.runde+5 == punkteliste[indexfrom0][3] %}
+            
+                <p>
+
+                    {{form_field.runde.label}} {{form_field.runde(value=punkteliste[indexfrom0][3], class="form_disabled")}}
+
+
+                </p>
+            
                 <table class="myTable">
                     <thead>
                         <tr>
@@ -39,28 +43,84 @@
 
             {% endif %}
             
-                <p>Test: {{ ns.runde }}</p>
                     <tr>
-                        <td>{{form_field.teilnehmer(value=punkteliste[form_index][1], class="form_disabled")}}</td>
-                        <td>{{form_field.ergebnis(value=punkteliste[form_index][4])}}</td>
+                        <td>{{ form_field.teilnehmer(value=punkteliste[indexfrom0][1], class="form_disabled") }}</td>
+                        <td>{{ form_field.ergebnis(value=punkteliste[indexfrom0][4]) }}</td>
+                        {{ form_field.runde(value=0, class="hide_me") }}
                     </tr>
 
 
-            {% if ns.runde == 1 %}
+
+            {% if loop.first or ns.runde == punkteliste[indexfrom0][3] %}
+                {% set ns.runde = ns.runde+1 %}
+            {% endif %}
+
+        {# keine schöne lösung, aber fals mittendrin eine runde gelöscht wird (z.B. Runde 4) funktioniert das system nimmer >.<, selbes auch oben beim erstellen der Tabelle #}
+            {% if ns.runde+1 == punkteliste[indexfrom0][3] %}
+                {% set ns.runde = ns.runde+2 %}
+            {% endif %}
+
+            {% if ns.runde+2 == punkteliste[indexfrom0][3] %}
+                {% set ns.runde = ns.runde+3 %}
+            {% endif %}
+
+            {% if ns.runde+3 == punkteliste[indexfrom0][3] %}
+                {% set ns.runde = ns.runde+4 %}
+            {% endif %}
+
+            {% if ns.runde+4 == punkteliste[indexfrom0][3] %}
+                {% set ns.runde = ns.runde+5 %}
+            {% endif %}
+
+            {% if ns.runde+5 == punkteliste[indexfrom0][3] %}
+                {% set ns.runde = ns.runde+6 %}
+            {% endif %}
+            
+
+            {% if loop.last or ns.runde == punkteliste[indexfrom0+1][3] %}
                     </tbody>
                 </table>
-
-                
-                {% set ns.runde = ns.runde+1 %}
-
+                <br/>
             {% endif %}
+
+            {% if indexfrom0+1 < punkteliste|length and ns.runde+1 == punkteliste[indexfrom0+1][3] %}
+                    </tbody>
+                </table>
+                <br/>
+            {% endif %}
+
+            {% if indexfrom0+1 < punkteliste|length and ns.runde+2 == punkteliste[indexfrom0+1][3] %}
+                    </tbody>
+                </table>
+                <br/>
+            {% endif %}
+
+            {% if indexfrom0+1 < punkteliste|length and ns.runde+3 == punkteliste[indexfrom0+1][3] %}
+                    </tbody>
+                </table>
+                <br/>
+            {% endif %}
+
+            {% if indexfrom0+1 < punkteliste|length and ns.runde+4 == punkteliste[indexfrom0+1][3] %}
+                    </tbody>
+                </table>
+                <br/>
+            {% endif %}
+
+            {% if indexfrom0+1 < punkteliste|length and ns.runde+5 == punkteliste[indexfrom0+1][3] %}
+                    </tbody>
+                </table>
+                <br/>
+            {% endif %}
+        {# Ende unschöne Lösung #}
+
     {% endfor %}
 
 
     </div>
-    <div>
-        {{ form.submit() }}
-    </div>
+
+    <div> {{ form.submit() }} </div>
+
     </form>
 
 <br /><br/><br/><br/>

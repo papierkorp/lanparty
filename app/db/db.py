@@ -6,7 +6,7 @@ cursor = connection.cursor()
 
 def create_tables():
 	query_createtable_teilnehmer = 'create table if not exists teilnehmer(teilnehmerid integer primary key autoincrement, name text, nickname text unique);'
-	query_createtable_turnier = 'create table if not exists turnier(turnierid integer primary key autoincrement, name text, jahr date default (strftime(\'%m-%Y\')), teilnehmer text sieger integer);'
+	query_createtable_turnier = 'create table if not exists turnier(turnierid integer primary key autoincrement, name text, jahr date default (strftime(\'%m-%Y\')), teilnehmer text, sieger integer);'
 	query_createtable_spiel = 'create table if not exists spiel(spielid integer primary key autoincrement, name text, typ text, maxspieler integer);'
 	query_createtable_turnierdetails = 'create table if not exists turnierdetails(turnierdetailsid integer primary key autoincrement, turnierid integer references turnier(turnierid), spielid integer references spiel(spielid), teilnehmerid integer references teilnehmer(teilnehmerid), runde integer, ergebnistyp text, ergebnis integer);'
 	cursor.execute(query_createtable_teilnehmer)
@@ -55,11 +55,24 @@ def delete_spiel(spiel):
 
 
 
-#insert into turnierdetails(turnierid, spielid, teilnehmerid, runde, ergebnis, ergebnistyp) values (1,1,1,1,45,"kills");
+
+
 def edit_ergebnis(turnierid, spielid, teilnehmerid, runde, ergebnis, ergebnistyp):
-	query = "insert or replace into turnierdetails (turnierid, spielid, teilnehmerid, runde, ergebnis, ergebnistyp) values (tuid,sid,teid,rd,{ergebnis}, ergebnistyp)".format(turnierid=turnierid, spielid=spielid, teilnehmerid=teilnehmerid, runde=runde, ergebnis=ergebnis, ergebnistyp=ergebnistyp)
+	#query = "insert or replace into turnierdetails (turnierid, spielid, teilnehmerid, runde, ergebnis, ergebnistyp) values (tuid,sid,teid,rd,{ergebnis}, ergebnistyp)".format(turnierid=turnierid, spielid=spielid, teilnehmerid=teilnehmerid, runde=runde, ergebnis=ergebnis, ergebnistyp=ergebnistyp)
+	query="UPDATE turnierdetails SET ergebnistyp = '{ergebnistyp}', ergebnis = {ergebnis} WHERE turnierid={turnierid} and spielid={spielid} and runde={runde} and teilnehmerid={teilnehmerid};".format(turnierid=turnierid, spielid=spielid, teilnehmerid=teilnehmerid, runde=runde, ergebnis=ergebnis, ergebnistyp=ergebnistyp)
 	message = "Spiel {spielid} für Turnier {turnierid} erfolgreich geupdated."
-	return execute_query(query)
+	return execute_query(query=query, message=message)
+
+def add_runde(turnierid, spielid, teilnehmerid, runde, ergebnistyp):
+	query = "insert into turnierdetails(turnierid, spielid, teilnehmerid, runde, ergebnistyp, ergebnis) values ({turnierid},{spielid},{teilnehmerid},{runde},'{ergebnistyp}', 0)".format(turnierid=turnierid, spielid=spielid, teilnehmerid=teilnehmerid, runde=runde, ergebnistyp=ergebnistyp)
+	message = "Runde erfolgreich hinzugefügt."
+	return execute_query(query=query,message=message)
+
+def delete_runde(turnierid, spielid, runde):
+	query = "delete from turnierdetails where turnierid={turnierid} and spielid={spielid} and runde={runde}".format(turnierid=turnierid, spielid=spielid, runde=runde)
+	message = "Runde erfolgreich gelöscht."
+	return execute_query(query=query,message=message)
+
 
 
 
@@ -107,30 +120,17 @@ def get_spielliste_pro_turnier(turnierid):
 	return execute_select_query(query)
 
 def get_punkte_pro_spiel_pro_turnier(turnierid, spielid):
-	gesamtergebnis = []
-	anzahlrunden = execute_select_query('select max(runde) from turnierdetails where turnierid={turnierid} and spielid={spielid};'.format(turnierid=turnierid, spielid=spielid))
-	for runde in range(1, anzahlrunden[0][0]+1):
-		ergebnistyp = execute_select_query('select distinct(ergebnistyp) from turnierdetails where turnierid={turnierid} and spielid={spielid} and runde={runde};'.format(turnierid=turnierid, spielid=spielid, runde=runde))
-		#print("ergebnistyp:", ergebnistyp[0][0])
-		#print("runde:", runde)
-		
-		#platz = 1. Platz ganz oben
-		#zeit = 1. Platz ganz oben
-		#kills = 1. Platz ganz unten
-		#pvp = 0/1
-		#punkte = 1. Platz ganz unten
+    gesamtergebnis = []
 
-		query = 'select spiel.name, teilnehmer.nickname, td.ergebnistyp, td.runde, td.ergebnis from turnierdetails as td inner join teilnehmer on td.teilnehmerid = teilnehmer.teilnehmerid inner join spiel on td.spielid = spiel.spielid where td.turnierid={turnierid} and td.spielid={spielid} and td.runde={runde} order by td.runde, td.ergebnis;'.format(turnierid=turnierid, spielid=spielid, runde=runde)
-		gesamtergebnis.append(execute_select_query(query))
+    runden = execute_select_query('SELECT DISTINCT(runde) FROM turnierdetails WHERE turnierid={turnierid} AND spielid={spielid};'.format(turnierid=turnierid, spielid=spielid))
 
-		#if ergebnistyp[0][0] == "kills" or ergebnistyp[0][0] == "Punkte":
-		#	print("gesamtergebnis kills/Punkte:", gesamtergebnis)
-		#elif ergebnistyp[0][0] == "zeit" or ergebnistyp[0][0] == "platz":
-		#	print("gesamtergebnis zeit:", gesamtergebnis)
-		#elif ergebnistyp[0][0] == "pvp":
-		#	print("gesamtergebnis pvp:", gesamtergebnis)
+    for runde in runden:
+        ergebnistyp = execute_select_query('SELECT DISTINCT(ergebnistyp) FROM turnierdetails WHERE turnierid={turnierid} AND spielid={spielid} AND runde={runde};'.format(turnierid=turnierid, spielid=spielid, runde=runde[0]))
 
-	return gesamtergebnis
+        query = 'SELECT spiel.name, teilnehmer.nickname, td.ergebnistyp, td.runde, td.ergebnis FROM turnierdetails AS td INNER JOIN teilnehmer ON td.teilnehmerid = teilnehmer.teilnehmerid INNER JOIN spiel ON td.spielid = spiel.spielid WHERE td.turnierid={turnierid} AND td.spielid={spielid} AND td.runde={runde} ORDER BY td.runde, td.ergebnis;'.format(turnierid=turnierid, spielid=spielid, runde=runde[0])
+        gesamtergebnis.append(execute_select_query(query))
+
+    return gesamtergebnis
 
 def get_teilnehmer_pro_turnier(turnierid):
 	query = 'select teilnehmer from turnier where turnierid={turnierid}'.format(turnierid=turnierid)
@@ -145,6 +145,9 @@ def get_turniere_pro_spiel(spielid):
 	query = 'select distinct turnier.name, turnier.jahr from turnierdetails as v inner join turnier on v.turnierid = turnier.turnierid where v.spielid = {spielid};'.format(spielid=spielid)
 	return execute_select_query(query)
 
+def get_last_round(turnierid, spielid):
+	query='select max(distinct(runde)) from turnierdetails where turnierid={turnierid} and spielid={spielid};'.format(turnierid=turnierid, spielid=spielid)
+	return execute_select_query(query)
 
 
 
