@@ -33,8 +33,12 @@
 
     {% for spiel in punktelistespiel %}
 
-    <h3 style="padding-left: 48px; font-weight: bold; font-style: italic; text-decoration: underline solid rgb(68, 68, 68);">
-    <a href="{{ url_for('ergebnis', turnierid=turnierid, spielname=spiel[0][0][0])}}">{{spiel[0][0][0]}}</a></h3>
+    <h3 style="padding-left: 16px; font-weight: bold; font-style: italic; text-decoration: underline solid rgb(68, 68, 68);">{{spiel[0][0][0]}}</h3>
+
+    <ul>
+        <li><a href="{{ url_for('ergebnis', turnierid=turnierid, spielname=spiel[0][0][0])}}">Ergebnis in Tabellenform eintragen</a></li> oder
+        <li><a href="{{ url_for('turnierbaum', turnierid=turnierid, spielname=spiel[0][0][0])}}">Turnierbaum erstellen + Ergebnis eintragen</a></li>
+    </ul>
 
             <p><table class="myTable">
                 <thead>

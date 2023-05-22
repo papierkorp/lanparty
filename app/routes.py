@@ -1,12 +1,12 @@
 from flask import render_template, flash, redirect, url_for, request, jsonify
 from app import app
-from app.db.db import add_turnier, get_turniere_pro_spiel, get_turniere, get_ergebnistyp, get_runden_pro_spiel_pro_turnier, get_turniername, get_teilnehmer_pro_turnier, get_punkte_pro_spiel_pro_turnier, get_spielliste_pro_turnier, get_punkteliste, get_teilnehmerid, add_teilnehmer, get_all_teilnehmer, delete_teilnehmer, add_spiel, get_all_spiele, delete_spiel, get_spiel, create_tables, get_teilgenommene_turniere_pro_teilnehmer, edit_ergebnis, add_runde, delete_runde, get_last_round, get_spielid, add_game_to_turnier, delete_game_from_turnier
+from app.db.db import add_turnier, get_turniere_pro_spiel, get_turniere, get_ergebnistyp, get_runden_pro_spiel_pro_turnier, get_turniername, get_teilnehmerid_pro_turnier, get_punkte_pro_spiel_pro_turnier, get_spielliste_pro_turnier, get_punkteliste, get_teilnehmerid, add_teilnehmer, get_all_teilnehmer, delete_teilnehmer, add_spiel, get_all_spiele, delete_spiel, get_spiel, create_tables, get_teilgenommene_turniere_pro_teilnehmer, edit_ergebnis, add_runde, delete_runde, get_last_round, get_spielid, add_game_to_turnier, delete_game_from_turnier, get_teilnehmername
 from app.logik.gruppenerstellung import Gruppenerstellung
 from app.logik.ergebnisberechnung import Ergebnisberechnung
 import urllib.parse
 import sqlite3
 import os
-from app.forms import TeilnehmerNeuForm, DeleteForm, SpielNeuForm, TurnierNeuForm, ErgebnisForm, TurnierBearbeiten
+from app.forms import TeilnehmerNeuForm, DeleteForm, SpielNeuForm, TurnierNeuForm, ErgebnisForm, TurnierBearbeiten, Turnierbaum
 
 #encoded_name = urllib.parse.quote(name)
 
@@ -41,7 +41,7 @@ def turnier(turnierid):
 	for data in spielliste_to_add_db:
 		spielliste_to_add.append(data[0])
 
-	teilnehmerliste = get_teilnehmer_pro_turnier(turnierid)
+	teilnehmerliste = get_teilnehmerid_pro_turnier(turnierid)
 
 #----------Form initieren
 	form = TurnierBearbeiten()
@@ -68,7 +68,7 @@ def turnier(turnierid):
 	return render_template('turnier.html', title="Turnier", punktelisteturnier=punkteliste_bearbeitet, punktelistespiel=punkteliste_pro_spiel, spielliste=spielliste_pro_turnier, turnierid=turnierid, form=form, turniername=turniername)
 
 
-@app.route('/turnier/<turnierid>/<spielname>', methods=['POST', 'GET'])
+@app.route('/turnier/ergebnistabelle/<turnierid>/<spielname>', methods=['POST', 'GET'])
 def ergebnis(turnierid, spielname):
 #----------Daten holen
 	ergebnistyp=["kills", "zeit", "platz", "pvp", "punkte"] #todo: aus db ziehen?
@@ -86,7 +86,11 @@ def ergebnis(turnierid, spielname):
 
 #----------Gruppenerstellung, grad noch nicht relevant
 	maxspieler = spiel[0][3]
-	teilnehmerliste = get_teilnehmer_pro_turnier(turnierid)
+	teilnehmerliste_id = get_teilnehmerid_pro_turnier(turnierid)
+	print(teilnehmerliste_id)
+	teilnehmerliste = []
+	for id in teilnehmerliste_id:
+		teilnehmerliste.append(get_teilnehmername(id)[0][0])
 	gruppen = Gruppenerstellung(Teilnehmerliste=teilnehmerliste, maxSpieler=maxspieler)
 
 #----------Form initieren
@@ -133,6 +137,13 @@ def ergebnis(turnierid, spielname):
 
 
 	return render_template('ergebnis.html', title="Ergebnis", form=form, turnierid=turnierid, spielname=spielname, turniername=turniername, punkteliste=punkteliste)
+
+@app.route('/turnier/turnierbaum/<turnierid>/<spielname>', methods=['POST', 'GET'])
+def turnierbaum(turnierid, spielname):
+# Daten holen
+	turniername = get_turniername(turnierid)
+	form = Turnierbaum()
+	return render_template('turnierbaum.html', title="Ergebnis", turniername=turniername, form=form)
 
 @app.route('/turnier_neu', methods=["POST", "GET"])
 def turnier_neu():

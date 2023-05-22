@@ -1,9 +1,9 @@
 # havetodo
 - Turnier - Übersicht - xxx - Spiel - Turnierbaum erstellen
 - Turnierdetails - Punkteliste - Gesamtpunkteauswertung (Ergebnisberechnung): zwei spieler mit selbem ergebnis werden noch nicht berücksichtigt
-- Turnierdetails - Punkteliste - Gesamtpunkteauswertung (Ergebnisberechnung): "punkte" einbauen
+- Turnierdetails - Punkteliste - Gesamtpunkteauswertung (Ergebnisberechnung): "punkte" "pvp" usw... einbauen
 
-# shouldtodo
+# wanttodo
 
 - Allgemein
   - route File refactore lul
@@ -38,11 +38,11 @@
   - disabled form style (ergebnis.html > forms.css > #myForm_edit .form_disabled )
   - Turnier - xxx Game hinzufügen/löschen Form überarbeiten
 - Datenbank
-  - DB - Tabelle Turnier - das Feld Teilnehmer in Sieger umbennenen
+  - DB - Tabelle Turnier - das Feld Teilnehmer in Sieger umbennenen - teilnehmer spalte in turnier Tabelle nötig?
   - funktion edit_ergebnis = spielid und turnierid durch namen ersetzen
   - funktion get_punkte_pro_spiel_pro_turnier = nach name sortieren..
   - DB aufsplitten in mehrere Dateien?
-  - teilnehmer spalte in turnier Tabelle nötig?
+  - werden noch alle query benötigt?
 Optimierungen
   - Ergebnis bearbeiten - nur für Änderungen eine Abfrage ausführen und nicht für alles
   - Ergebnis bearbeiten - spielid übergeben und nicht einzeln abfragen

@@ -39,3 +39,6 @@ class TurnierBearbeiten(FlaskForm):
     deletegame = SubmitField('Game löschen')
     gamelist_to_delete = SelectField('Spielliste zum Löschen', validators=[DataRequired()], coerce=str)
     gamelist_to_add = SelectField('Spielliste zum Hinzufügen', validators=[DataRequired()], coerce=str)
+
+class Turnierbaum(FlaskForm):
+    submit = SubmitField('Ergebnis abschicken')

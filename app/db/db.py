@@ -112,6 +112,10 @@ def get_spielid(spielname):
 	query = 'select spielid from spiel where name="{spielname}";'.format(spielname=spielname)
 	return execute_select_query(query)
 
+def get_maxspieler(spielid):
+	query = 'select maxspieler from spiel where spielid={spielid};'.format(spielid=spielid)
+	return execute_select_query(query)
+
 def get_teilgenommene_turniere_pro_teilnehmer(teilnehmerid):
 	query= 'select turnier.turnierid, turnier.name, turnier.jahr from turnierdetails as t inner join turnier on t.turnierid = turnier.turnierid where t.teilnehmerid = {teilnehmerid} group by t.turnierid;'.format(teilnehmerid=teilnehmerid)
 	return execute_select_query(query)
@@ -145,7 +149,7 @@ def get_punkte_pro_spiel_pro_turnier(turnierid, spielid):
 
     return gesamtergebnis
 
-def get_teilnehmer_pro_turnier(turnierid):
+def get_teilnehmerid_pro_turnier(turnierid):
 	query = 'select teilnehmer from turnier where turnierid={turnierid}'.format(turnierid=turnierid)
 	#query = 'select distinct(teilnehmerid) from turnierdetails where turnierid={turnierid};'.format(turnierid=turnierid)
 	teilnehmerstr = execute_select_query(query)
