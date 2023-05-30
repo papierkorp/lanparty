@@ -37,7 +37,7 @@ def add_turnier(turniername, teilnehmerlist):
 		teilnehmerlist_ids.append(str(get_teilnehmerid(name)[0][0]))
 	teilnehmerlist_strg = " ".join(teilnehmerlist_ids)
 	query = "INSERT INTO turnier(name, teilnehmer) VALUES ('{turniername}', '{teilnehmer}');".format(turniername=turniername, teilnehmer=teilnehmerlist_strg)
-	message = "Turnier erfolgreich angelegt."
+	message = "Turnier {turniername} mit den Teilnehmer: {teilnehmerlist} erfolgreich angelegt.".format(turniername=turniername, teilnehmerlist=teilnehmerlist)
 	return execute_query(query=query, message=message)
 
 def delete_teilnehmer(nickname):

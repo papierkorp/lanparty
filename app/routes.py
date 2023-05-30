@@ -150,8 +150,6 @@ def turnier_neu():
 	form = TurnierNeuForm()
 	form.teilnehmer.choices=[(t[1]) for t in get_all_teilnehmer()]
 	if form.validate_on_submit():
-		flash(form.name.data)
-		flash(form.teilnehmer.data)
 		flash(add_turnier(turniername=form.name.data, teilnehmerlist=form.teilnehmer.data))
 		return redirect(url_for('turniere'))
 	return render_template('turnier_neu.html', title="Turnier hinzufügen", form=form)

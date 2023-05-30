@@ -474,3 +474,43 @@ inner join teilnehmer
 on td.teilnehmerid = teilnehmer.teilnehmerid
 where td.spielid = 3;
 ```
+
+
+# Daten
+
+- Gesamt
+	+ sancho		4
+	+ draham		4
+	+ brandmeister	13
+	+ tobse			7
+	+ papierkorp	16
+- CS
+	+ sancho		0
+	+ draham		1
+	+ brandmeister	2
+	+ tobse			3
+	+ papierkorp	5
+- Trackmania
+	+ sancho		0
+	+ draham		1
+	+ brandmeister	5
+	+ tobse			2
+	+ papierkorp	3
+- Worms
+	+ sancho		4
+	+ draham		2
+	+ brandmeister	6
+	+ tobse			2
+	+ papierkorp	8
+- Worms Runde 1
+	+ sancho		1
+	+ draham		0
+	+ brandmeister	5
+	+ tobse			2
+	+ papierkorp	3
+- Worms Runde 2
+	+ sancho		3
+	+ draham		2
+	+ brandmeister	1
+	+ tobse			0
+	+ papierkorp	5
