@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request, jsonify
 from app import app
-from app.db.db import add_turnier, get_turniere_pro_spiel, get_turniere, get_ergebnistyp, get_runden_pro_spiel_pro_turnier, get_turniername, get_teilnehmerid_pro_turnier, get_punkte_pro_spiel_pro_turnier, get_spielliste_pro_turnier, get_punkteliste, get_teilnehmerid, add_teilnehmer, get_all_teilnehmer, delete_teilnehmer, add_spiel, get_all_spiele, delete_spiel, get_spiel, create_tables, get_teilgenommene_turniere_pro_teilnehmer, edit_ergebnis, add_runde, delete_runde, get_last_round, get_spielid, add_game_to_turnier, delete_game_from_turnier, get_teilnehmername
+from app.db.db import add_turnier, get_turniere_pro_spiel, get_turniere, get_ergebnistyp, get_runden_pro_spiel_pro_turnier, get_turniername, get_teilnehmerid_pro_turnier, get_punkte_pro_spiel_pro_turnier, get_spielliste_pro_turnier, get_punkteliste, get_teilnehmerid, add_teilnehmer, get_all_teilnehmer, delete_teilnehmer, add_spiel, get_all_spiele, delete_spiel, get_spiel, get_teilgenommene_turniere_pro_teilnehmer, edit_ergebnis, add_runde, delete_runde, get_last_round, get_spielid, add_game_to_turnier, delete_game_from_turnier, get_teilnehmername, execute_sql_file
 from app.logik.gruppenerstellung import Gruppenerstellung
 from app.logik.ergebnisberechnung import Ergebnisberechnung
 import urllib.parse
@@ -65,7 +65,7 @@ def turnier(turnierid):
 
 
 
-	return render_template('turnier.html', title="Turnier", punktelisteturnier=punkteliste_bearbeitet, punktelistespiel=punkteliste_pro_spiel, spielliste=spielliste_pro_turnier, turnierid=turnierid, form=form, turniername=turniername)
+	return render_template('tournament.html', title="Turnier", punktelisteturnier=punkteliste_bearbeitet, punktelistespiel=punkteliste_pro_spiel, spielliste=spielliste_pro_turnier, turnierid=turnierid, form=form, turniername=turniername)
 
 
 @app.route('/turnier/ergebnistabelle/<turnierid>/<spielname>', methods=['POST', 'GET'])
@@ -136,7 +136,7 @@ def ergebnis(turnierid, spielname):
 			return redirect(url_for('ergebnis', turnierid=turnierid, spielname=spielname))
 
 
-	return render_template('ergebnis.html', title="Ergebnis", form=form, turnierid=turnierid, spielname=spielname, turniername=turniername, punkteliste=punkteliste)
+	return render_template('result.html', title="Ergebnis", form=form, turnierid=turnierid, spielname=spielname, turniername=turniername, punkteliste=punkteliste)
 
 @app.route('/turnier/turnierbaum/<turnierid>/<spielname>', methods=['POST', 'GET'])
 def turnierbaum(turnierid, spielname):
@@ -152,13 +152,13 @@ def turnier_neu():
 	if form.validate_on_submit():
 		flash(add_turnier(turniername=form.name.data, teilnehmerlist=form.teilnehmer.data))
 		return redirect(url_for('turniere'))
-	return render_template('turnier_neu.html', title="Turnier hinzufügen", form=form)
+	return render_template('tournament_new.html', title="Turnier hinzufügen", form=form)
 
 
 @app.route('/turniere')
 def turniere():
 	turniere = get_turniere()
-	return render_template('turniere.html', title="Turniere", turniere=turniere)
+	return render_template('tournament_all.html', title="Turniere", turniere=turniere)
 
 
 @app.route('/profil/<nickname>', methods=["POST", "GET"])
@@ -169,7 +169,7 @@ def profil(nickname):
 	if form.validate_on_submit():
 		flash(delete_teilnehmer(nickname))
 		return redirect(url_for('teilnehmer'))
-	return render_template('profil.html', nickname=nickname, form=form, teilgenommene_turniere = teilgenommene_turniere)
+	return render_template('player_profile.html', nickname=nickname, form=form, teilgenommene_turniere = teilgenommene_turniere)
 
 
 @app.route('/teilnehmer_neu', methods=["POST", "GET"])
@@ -180,18 +180,18 @@ def teilnehmer_neu():
 	if form.validate_on_submit():
 		create_tables()
 		#flash(add_teilnehmer(name, nickname))
-	return render_template('teilnehmer_neu.html', title="Teilnehmer hinzufügen", form=form)
+	return render_template('player_new.html', title="Teilnehmer hinzufügen", form=form)
 
 @app.route('/teilnehmer', methods=["POST", "GET"])
 def teilnehmer():
 	alle_teilnehmer = get_all_teilnehmer()
-	return render_template('teilnehmer.html', title="Alle Teilnehmer Übersicht", alle_teilnehmer=alle_teilnehmer)
+	return render_template('player_all.html', title="Alle Teilnehmer Übersicht", alle_teilnehmer=alle_teilnehmer)
 
 
 @app.route('/spiele')
 def spiele():
 	alle_spiele = get_all_spiele()
-	return render_template('spiele.html', title="Alle Spiele Übersicht", alle_spiele=alle_spiele)
+	return render_template('game_all.html', title="Alle Spiele Übersicht", alle_spiele=alle_spiele)
 
 @app.route('/spiele/<spiel>', methods=["POST", "GET"])
 def spiel(spiel):
@@ -201,7 +201,7 @@ def spiel(spiel):
 		return redirect(url_for('spiele'))
 	spieldetails = get_spiel(spiel)
 	turniere = get_turniere_pro_spiel(spieldetails[0][0])
-	return render_template('spiel.html', title=spiel, form=form, spiel=spiel, spieldetails=spieldetails, turniere=turniere)
+	return render_template('game.html', title=spiel, form=form, spiel=spiel, spieldetails=spieldetails, turniere=turniere)
 
 @app.route('/spiel_neu', methods=["POST", "GET"])
 def spiel_neu():
@@ -211,4 +211,20 @@ def spiel_neu():
 	maxspieler=form.maxspieler.data
 	if form.validate_on_submit():
 		flash(add_spiel(name=name, typ=typ, maxspieler=maxspieler))
-	return render_template('spiel_neu.html', title="Spiel hinzufügen", form=form)
+	return render_template('game_new.html', title="Spiel hinzufügen", form=form)
+
+@app.route('/admin', methods=["POST", "GET"])
+def admin():
+	current_dir = os.path.dirname(os.path.abspath(__file__))
+	tables_file=os.path.join(current_dir, 'db', 'tables.sql')
+	testdata_file=os.path.join(current_dir, 'db', 'testdata.sql')
+	if request.method == 'POST':
+		print(request.form)
+		#data = request.form['testdata'] #theoretisch, hab nur buttons :D
+		if 'tables' in request.form:
+			print("tables")
+			flash(execute_sql_file(sqlfile=tables_file, message="Tabellen erfolgreich resettet!"))
+		if 'testdata.x' in request.form or 'testdata.y' in request.form:
+			print("testdata")
+			flash(execute_sql_file(sqlfile=testdata_file, message="Testdaten erfolgreich hinzugefügt!"))
+	return render_template('admin.html', title="Admin Zeugs")

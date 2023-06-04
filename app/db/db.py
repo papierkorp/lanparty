@@ -4,19 +4,18 @@ import json
 connection = sqlite3.connect("lanparty.db", check_same_thread=False)
 cursor = connection.cursor()
 
-def create_tables():
-	query_createtable_teilnehmer = 'create table if not exists teilnehmer(teilnehmerid integer primary key autoincrement, name text, nickname text unique);'
-	query_createtable_turnier = 'create table if not exists turnier(turnierid integer primary key autoincrement, name text, jahr date default (strftime(\'%m-%Y\')), teilnehmer text, sieger integer);'
-	query_createtable_spiel = 'create table if not exists spiel(spielid integer primary key autoincrement, name text, typ text, maxspieler integer);'
-	query_createtable_turnierdetails = 'create table if not exists turnierdetails(turnierdetailsid integer primary key autoincrement, turnierid integer references turnier(turnierid), spielid integer references spiel(spielid), teilnehmerid integer references teilnehmer(teilnehmerid), runde integer, ergebnistyp text, ergebnis integer);'
-	cursor.execute(query_createtable_teilnehmer)
-	cursor.execute(query_createtable_turnier)
-	cursor.execute(query_createtable_spiel)
-	cursor.execute(query_createtable_turnierdetails)
-	connection.commit()
-	connection.close()
-
-
+def execute_sql_file(sqlfile, message):
+	with open(sqlfile, 'r') as file:
+		filedata = file.read().split(';')
+		for statement in filedata:
+			if statement.strip(): #leere Statements ignorieren
+				try:
+					cursor.execute(statement)
+					connection.commit()
+				except sqlite3.IntegrityError as e:
+					return "Integrity Error: " + str(e)
+		#connection.close()
+	return message
 
 
 

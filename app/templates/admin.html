@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block app_content %}
+
+    <h1>Admin Zeugs ohne Zugriffsbeschränken höhö</h1>
+
+<form method="POST" novalidate>
+
+    <p>
+        
+        <label for="tables">Tabellen resetten</label>
+        <input 
+            type="submit" 
+            name="tables" 
+            width="24" 
+            height="24" 
+            value="tables"
+        />
+    </p>
+
+    <p>
+        <label for="testdata">Testdaten einfügen</label>
+        <input 
+            type="image" 
+            src="{{ url_for('static', filename='storage.png') }}" 
+            name="testdata" 
+            width="24" 
+            height="24" 
+            value="testdata"
+        />
+    </p>
+
+</form>
+
+<p>
+    <button id="myButton" type="button">Testbutton ohne Funktion für mich zur Info.</button>
+    <script>
+        // Add an event listener to the button
+        document.getElementById('myButton').addEventListener('click', function() {
+            // Define the data you want to send
+            const data = {
+                key1: 'value1',
+                key2: 'value2',
+                // Add more key-value pairs as needed
+            };
+
+            // Send a POST request to your Flask server with the data
+            fetch('/execute_script', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from the server
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</p>
+{% endblock %}

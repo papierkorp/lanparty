@@ -26,8 +26,9 @@
     <label for="teilnehmer">Teilnehmer</label>
     <input type="checkbox" id="spiele">
     <label for="spiele">Spiele</label>
-    <div class="startseite-links">
-    </div>
+    <a href="{{ url_for("admin") }}">Admin</a>
+    <div class="startseite-links"></div>
+    <div class="admin-links"></div>
     <div class="turnier-links">
         <br><br> <b>Turnier:</b>
         <a href="{{ url_for("turniere") }}">Übersicht</a>

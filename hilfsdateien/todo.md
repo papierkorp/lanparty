@@ -43,6 +43,7 @@
   - funktion get_punkte_pro_spiel_pro_turnier = nach name sortieren..
   - DB aufsplitten in mehrere Dateien?
   - werden noch alle query benötigt?
+  - wenn db leer ist, hagelt es fehlermeldungen (weil die querys nicht ausgeführt werden können)
 Optimierungen
   - Ergebnis bearbeiten - nur für Änderungen eine Abfrage ausführen und nicht für alles
   - Ergebnis bearbeiten - spielid übergeben und nicht einzeln abfragen
