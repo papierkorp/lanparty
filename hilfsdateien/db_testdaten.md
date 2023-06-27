@@ -204,3 +204,159 @@ where td.spielid = 3;
 	+ brandmeister	1
 	+ tobse			0
 	+ papierkorp	5
+
+## Chat GPT
+
+Task:
+
+Create a python Algorithm with following Requirements:
+
+kills, the person with the most kills = 1. place
+time, the person with the lowest secondes = 1. place
+
+
+Total Points per Player = points of all games accumulated
+
+Total Points per Game, 1. place = Number of Participants
+Total Points per Game, 2. place = Number of Participants-2
+Total Points per Game, 3. place = Number of Participants-3
+...
+Total Points per Game, last place = 0
+
+You dont need to print the example Data.
+
+
+This Data is available:
+
+Format: ('Game', 'Player', 'calculation_type', 'round', 'score')
+
+[
+	[
+		[
+			('Counter Strike:Globale Offensive', 'sancho', 'kills', 1, 15), 
+			('Counter Strike:Globale Offensive', 'draham', 'kills', 1, 21), 
+			('Counter Strike:Globale Offensive', 'brandmeister', 'kills', 1, 30), 
+			('Counter Strike:Globale Offensive', 'tobse', 'kills', 1, 42), 
+			('Counter Strike:Globale Offensive', 'papierkorp', 'kills', 1, 45)
+		]
+	], 
+	[
+		[
+			('Trackmania', 'brandmeister', 'time', 1, 45), 
+			('Trackmania', 'papierkorp', 'time', 1, 47), 
+			('Trackmania', 'tobse', 'time', 1, 51), 
+			('Trackmania', 'draham', 'time', 1, 77), 
+			('Trackmania', 'sancho', 'time', 1, 93)
+		]
+	], 
+	[
+		[
+			('Worms Armageddon', 'brandmeister', 'place', 1, 1), 
+			('Worms Armageddon', 'papierkorp', 'place', 1, 2),
+			('Worms Armageddon', 'tobse', 'place', 1, 3), 
+			('Worms Armageddon', 'sancho', 'place', 1, 4), 
+			('Worms Armageddon', 'draham', 'place', 1, 5)
+		], 
+		[
+			('Worms Armageddon', 'papierkorp', 'place', 2, 1), 
+			('Worms Armageddon', 'sancho', 'place', 2, 2), 
+			('Worms Armageddon', 'draham', 'place', 2, 3), 
+			('Worms Armageddon', 'brandmeister', 'place', 2, 4), 
+			('Worms Armageddon', 'tobse', 'place', 2, 5)
+		]
+	]
+] 
+
+
+Example how the score should look (manually created):
+
+- Total Points
+	+ sancho		4 Points
+	+ draham		4 Points
+	+ brandmeister	13 Points
+	+ tobse			7 Points
+	+ papierkorp	16 Points
+- CS Gesamt
+	+ sancho		0 Points
+	+ draham		1 Points
+	+ brandmeister	2 Points
+	+ tobse			3 Points
+	+ papierkorp	5 Points
+- CS Runde 1
+	+ sancho		15 Kills
+	+ draham		21 Kills
+	+ brandmeister	30 Kills
+	+ tobse			42 Kills
+	+ papierkorp	45 Kills
+- Trackmania Gesamt
+	+ sancho		0 Points
+	+ draham		1 Points
+	+ brandmeister	5 Points
+	+ tobse			2 Points
+	+ papierkorp	3 Points
+- Trackmania Runde 1
+	+ sancho		93 Seconds
+	+ draham		77 Seconds
+	+ brandmeister	45 Seconds
+	+ tobse			51 Seconds
+	+ papierkorp	47 Seconds
+- Worms Gesamt
+	+ sancho		4 Points
+	+ draham		2 Points
+	+ brandmeister	6 Points
+	+ tobse			2 Points
+	+ papierkorp	8 Points
+- Worms Runde 1
+	+ sancho		4. Place
+	+ draham		5. Place
+	+ brandmeister	1. Place
+	+ tobse			3. Place
+	+ papierkorp	2. Place
+- Worms Runde 2
+	+ sancho		2. Place
+	+ draham		3. Place
+	+ brandmeister	4. Place
+	+ tobse			5. Place
+	+ papierkorp	1. Place
+	
+
+## ChatGPT2
+
+Task:
+
+Create a python Algorithm with following Requirements:
+
+1. place (person with most kills) = get points according to the Number of Participants
+2. place = get points according to the Number of Participants-2
+3. place = get points according to the Number of Participants-3
+...
+Total Points per Game, last place (person with least kills) = gets 0 Points
+
+
+Available Data:
+
+Format: ('game', 'player', 'calculation_type', 'round', 'score')
+
+[
+	('Counter Strike:Globale Offensive', 'sancho', 'kills', 1, 15), 
+	('Counter Strike:Globale Offensive', 'draham', 'kills', 1, 21), 
+	('Counter Strike:Globale Offensive', 'brandmeister', 'kills', 1, 30), 
+	('Counter Strike:Globale Offensive', 'tobse', 'kills', 1, 42), 
+	('Counter Strike:Globale Offensive', 'papierkorp', 'kills', 1, 45)
+]
+
+
+Example how the score should look (manually created):
+
+- CS Total Points
+	+ sancho		0 Points
+	+ draham		1 Points
+	+ brandmeister	2 Points
+	+ tobse			3 Points
+	+ papierkorp	5 Points
+- CS Round1 Score
+	+ sancho		15 Kills
+	+ draham		21 Kills
+	+ brandmeister	30 Kills
+	+ tobse			42 Kills
+	+ papierkorp	45 Kills

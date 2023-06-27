@@ -1,7 +1,35 @@
 from collections import defaultdict
 
-#punkteliste=
-#[
+def Ergebnisberechnung(punkteliste):
+    ordnung = {
+        'kills': True,
+        'zeit': False,
+        'platz': False,
+        'pvp': False,
+        'Punkte': False,
+    }
+    #print("punkteliste", punkteliste)
+    
+    punkte_gesamt = defaultdict(int)
+
+    for spiel in punkteliste:
+        punkte_game = defaultdict(int)
+        for runde in spiel:
+            runde_sortiert = sorted(runde, key=lambda x: x[4], reverse=ordnung[runde[0][2]])
+            punkte_runde = {x[1]: len(runde_sortiert) - (i + 1 if i else 0) for i, x in enumerate(runde_sortiert)}
+
+            for x, y in punkte_runde.items():
+                punkte_game[x] += y
+                punkte_gesamt[x] += y
+
+            #print("    punkte_runde:", sorted(punkte_runde.items(), key=lambda x: x[1], reverse=True))
+        #print("  punkte_game:", sorted(punkte_game.items(), key=lambda x: x[1], reverse=True))
+    #print("\npunkte_gesamt:", sorted(punkte_gesamt.items(), key=lambda x: x[1], reverse=True))
+    return(sorted(punkte_gesamt.items(), key=lambda x: x[1], reverse=True))
+
+
+#test: https://www.online-python.com/
+#punkteliste=[
 #    [
 #        [
 #            ('Counter Strike:Globale Offensive', 'sancho', 'kills', 1, 15), 
@@ -37,29 +65,20 @@ from collections import defaultdict
 #        ]
 #    ]
 #]
+#
+#punkteliste2=[
+#    [
+#        [
+#            ('Counter Strike:Globale Offensive', 'sancho', 'kills', 1, 15), 
+#            ('Counter Strike:Globale Offensive', 'draham', 'kills', 1, 21), 
+#            ('Counter Strike:Globale Offensive', 'brandmeister', 'kills', 1, 30), 
+#            ('Counter Strike:Globale Offensive', 'tobse', 'kills', 1, 42), 
+#            ('Counter Strike:Globale Offensive', 'papierkorp', 'kills', 1, 45)
+#        ]
+#    ]
+#]
 
-def Ergebnisberechnung(punkteliste):
-    ordnung = {
-        'kills': True,
-        'zeit': False,
-        'platz': False,
-        'pvp': False,
-        'Punkte': False,
-    }
-    print("punkteliste", punkteliste)
-    punkte_gesamt = defaultdict(int)
-
-    for spiel in punkteliste:
-        punkte_game = defaultdict(int)
-        for runde in spiel:
-            runde_sortiert = sorted(runde, key=lambda x: x[4], reverse=ordnung[runde[0][2]])
-            punkte_runde = {x[1]: len(runde_sortiert) - (i + 1 if i else 0) for i, x in enumerate(runde_sortiert)}
-
-            for x, y in punkte_runde.items():
-                punkte_game[x] += y
-                punkte_gesamt[x] += y
-
-            #print("    punkte_runde:", sorted(punkte_runde.items(), key=lambda x: x[1], reverse=True))
-        #print("  punkte_game:", sorted(punkte_game.items(), key=lambda x: x[1], reverse=True))
-    #print("\npunkte_gesamt:", sorted(punkte_gesamt.items(), key=lambda x: x[1], reverse=True))
-    return(sorted(punkte_gesamt.items(), key=lambda x: x[1], reverse=True))
+#res = Ergebnisberechnung(punkteliste)
+#
+#for i in res:
+#    print(i)
