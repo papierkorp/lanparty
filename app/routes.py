@@ -1,8 +1,8 @@
 from flask import render_template, flash, redirect, url_for, request, jsonify
 from app import app
-from app.db.db import add_turnier, get_turniere_pro_spiel, get_turniere, get_ergebnistyp, get_runden_pro_spiel_pro_turnier, get_turniername, get_teilnehmerid_pro_turnier, get_punkte_pro_spiel_pro_turnier, get_spielliste_pro_turnier, get_punkteliste, get_teilnehmerid, add_teilnehmer, get_all_teilnehmer, delete_teilnehmer, add_spiel, get_all_spiele, delete_spiel, get_spiel, get_teilgenommene_turniere_pro_teilnehmer, edit_ergebnis, add_runde, delete_runde, get_last_round, get_spielid, add_game_to_turnier, delete_game_from_turnier, get_teilnehmername, execute_sql_file
+from app.db.db import add_turnier, get_turniere_pro_spiel, get_turniere, get_scoretyp, get_runden_pro_spiel_pro_turnier, get_turniername, get_teilnehmerid_pro_turnier, get_punkte_pro_spiel_pro_turnier, get_spielliste_pro_turnier, get_punkteliste, get_teilnehmerid, add_teilnehmer, get_all_teilnehmer, delete_teilnehmer, add_spiel, get_all_spiele, delete_spiel, get_spiel, get_teilgenommene_turniere_pro_teilnehmer, edit_ergebnis, add_runde, delete_runde, get_last_round, get_spielid, add_game_to_turnier, delete_game_from_turnier, get_teilnehmername, execute_sql_file
 from app.logik.gruppenerstellung import Gruppenerstellung
-from app.logik.ergebnisberechnung import Ergebnisberechnung
+from app.logik.ergebnisberechnung import Ergebnisberechnung_gesamt
 import urllib.parse
 import sqlite3
 import os
@@ -34,7 +34,8 @@ def turnier(turnierid):
 	for i in spielliste_pro_turnier:
 		spielliste_to_delete.append(i[1])
 		punkteliste_pro_spiel.append(get_punkte_pro_spiel_pro_turnier(turnierid=turnierid, spielid=i[0]))
-	punkteliste_bearbeitet = Ergebnisberechnung(punkteliste_pro_spiel)
+	print("punkteliste_pro_spiel", punkteliste_pro_spiel)
+	punkteliste_bearbeitet = Ergebnisberechnung_gesamt(punkteliste_pro_spiel)
 
 	spielliste_to_add_db = get_all_spiele()
 	spielliste_to_add = []
@@ -71,7 +72,7 @@ def turnier(turnierid):
 @app.route('/turnier/ergebnistabelle/<turnierid>/<spielname>', methods=['POST', 'GET'])
 def ergebnis(turnierid, spielname):
 #----------Daten holen
-	ergebnistyp=["kills", "zeit", "platz", "pvp", "punkte"] #todo: aus db ziehen?
+	scoretyp=["kills", "zeit", "platz", "pvp", "punkte"] #todo: aus db ziehen?
 	spiel = get_spiel(name=spielname)
 	spielid = spiel[0][0]
 	turniername = get_turniername(turnierid)
@@ -81,13 +82,15 @@ def ergebnis(turnierid, spielname):
 	punkteliste=[]
 	for runde in punkteliste_db:
 		punkteliste += runde #todo: sql statement ändern statt hier?
+	print("punkteliste", punkteliste)
 	anzahl_einträge = len(punkteliste)
 	anzahl_teilnehmer = len(punkteliste_db[0])
 
 #----------Gruppenerstellung, grad noch nicht relevant
 	maxspieler = spiel[0][3]
 	teilnehmerliste_id = get_teilnehmerid_pro_turnier(turnierid)
-	print(teilnehmerliste_id)
+	print("teilnehmerliste_id", teilnehmerliste_id)
+	print("turnierid", turnierid)
 	teilnehmerliste = []
 	for id in teilnehmerliste_id:
 		teilnehmerliste.append(get_teilnehmername(id)[0][0])
@@ -96,14 +99,17 @@ def ergebnis(turnierid, spielname):
 #----------Form initieren
 	form = ErgebnisForm(ergebnislist=[{} for _ in range(anzahl_einträge)], deleteroundlist=[{} for _ in range(anzahl_runden)])
 	form.rounds.choices = runden_pro_spiel
-	form.ergebnistyp.choices = ergebnistyp
-	form.ergebnistyp.data = punkteliste[0][2]
+	form.scoretyp.choices = scoretyp
+	form.scoretyp.data = punkteliste[0][2]
 
 #----------Form Daten verarbeiten
 	#for x in request.form:
 	#	print("request.form", x)
+	#print("form.validate_on_submit()", form.validate_on_submit())
+	#print("request.form.get", request.form.get)
+	#print("request.method", request.method)
 
-	if form.validate_on_submit() and request.form.get('submit'):
+	if request.form.get('submit'): #and form.validate_on_submit() 
 		current_round = None
 
 		for item in form.data['ergebnislist']:
@@ -112,22 +118,22 @@ def ergebnis(turnierid, spielname):
 		    else:
 		        item['runde'] = current_round
 
-		    #print('ergebnistyp: ', form.ergebnistyp.data)
-		    #print('runde: ', item['runde'])
-		    #print('ergebnis: ', item['ergebnis'])
-		    #print('teilnehmer: ', item['teilnehmer'])
-		    #print('teilnehmerid:', get_teilnehmerid(item['teilnehmer'])[0][0])
-		    #print('..................')
+		    print('scoretyp: ', form.scoretyp.data)
+		    print('runde: ', item['runde'])
+		    print('ergebnis: ', item['ergebnis'])
+		    print('teilnehmer: ', item['teilnehmer'])
+		    print('teilnehmerid:', get_teilnehmerid(item['teilnehmer'])[0][0])
+		    print('..................')
 
-		    flash(edit_ergebnis(turnierid=turnierid, spielid=spielid, teilnehmerid=get_teilnehmerid(item['teilnehmer'])[0][0], runde=item['runde'], ergebnis=item['ergebnis'], ergebnistyp=form.ergebnistyp.data))
+		    flash(edit_ergebnis(turnierid=turnierid, spielid=spielid, teilnehmerid=get_teilnehmerid(item['teilnehmer'])[0][0], runde=item['runde'], score=item['ergebnis'], scoretyp=form.scoretyp.data))
 		return redirect(url_for('ergebnis', turnierid=turnierid, spielname=spielname))
 
 	if request.method == "POST":
 		if request.form.get('addround'):
 			print("Add Round")
 			letzte_runde = get_last_round(turnierid=turnierid, spielid=spielid)[0][0]
-			for teilnehmerid in teilnehmerliste:
-				flash(add_runde(turnierid=turnierid, spielid=spielid, teilnehmerid=teilnehmerid, runde=letzte_runde+1,ergebnistyp=form.ergebnistyp.data))
+			for teilnehmerid in teilnehmerliste_id:
+				flash(add_runde(turnierid=turnierid, spielid=spielid, teilnehmerid=teilnehmerid, runde=letzte_runde+1,scoretyp=form.scoretyp.data))
 			return redirect(url_for('ergebnis', turnierid=turnierid, spielname=spielname))
 
 		if request.form.get('deleteround'):
@@ -178,8 +184,7 @@ def teilnehmer_neu():
 	name=form.name.data
 	nickname=form.nickname.data
 	if form.validate_on_submit():
-		create_tables()
-		#flash(add_teilnehmer(name, nickname))
+		flash(add_teilnehmer(name, nickname))
 	return render_template('player_new.html', title="Teilnehmer hinzufügen", form=form)
 
 @app.route('/teilnehmer', methods=["POST", "GET"])

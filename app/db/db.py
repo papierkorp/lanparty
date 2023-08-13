@@ -49,14 +49,14 @@ def delete_spiel(spiel):
 	message = "Spiel {spiel} erfolgreich gelöscht.".format(spiel=spiel)
 	return execute_query(query=query, message=message)
 
-def edit_ergebnis(turnierid, spielid, teilnehmerid, runde, ergebnis, ergebnistyp):
-	#query = "insert or replace into turnierdetails (turnierid, spielid, teilnehmerid, runde, ergebnis, ergebnistyp) values (tuid,sid,teid,rd,{ergebnis}, ergebnistyp)".format(turnierid=turnierid, spielid=spielid, teilnehmerid=teilnehmerid, runde=runde, ergebnis=ergebnis, ergebnistyp=ergebnistyp)
-	query="UPDATE turnierdetails SET ergebnistyp = '{ergebnistyp}', ergebnis = {ergebnis} WHERE turnierid={turnierid} and spielid={spielid} and runde={runde} and teilnehmerid={teilnehmerid};".format(turnierid=turnierid, spielid=spielid, teilnehmerid=teilnehmerid, runde=runde, ergebnis=ergebnis, ergebnistyp=ergebnistyp)
-	message = "Spiel {spielid} für Turnier {turnierid} erfolgreich geupdated."
+def edit_ergebnis(turnierid, spielid, teilnehmerid, runde, score, scoretyp):
+	#query = "insert or replace into turnierdetails (turnierid, spielid, teilnehmerid, runde, score, scoretyp) values (tuid,sid,teid,rd,{score}, scoretyp)".format(turnierid=turnierid, spielid=spielid, teilnehmerid=teilnehmerid, runde=runde, score=score, scoretyp=scoretyp)
+	query="UPDATE turnierdetails SET scoretyp = '{scoretyp}', score = {score} WHERE turnierid={turnierid} and spielid={spielid} and runde={runde} and teilnehmerid={teilnehmerid};".format(turnierid=turnierid, spielid=spielid, teilnehmerid=teilnehmerid, runde=runde, score=score, scoretyp=scoretyp)
+	message = "Ergebnis: {score} für den Spieler {teilnehmername} in Runde {runde} erfolgreich geupdated.".format(score=score,  teilnehmername=get_teilnehmername(teilnehmerid)[0][0], runde=runde)
 	return execute_query(query=query, message=message)
 
-def add_runde(turnierid, spielid, teilnehmerid, runde, ergebnistyp):
-	query = "insert into turnierdetails(turnierid, spielid, teilnehmerid, runde, ergebnistyp, ergebnis) values ({turnierid},{spielid},{teilnehmerid},{runde},'{ergebnistyp}', 0)".format(turnierid=turnierid, spielid=spielid, teilnehmerid=teilnehmerid, runde=runde, ergebnistyp=ergebnistyp)
+def add_runde(turnierid, spielid, teilnehmerid, runde, scoretyp):
+	query = "insert into turnierdetails(turnierid, spielid, teilnehmerid, runde, scoretyp, score) values ({turnierid},{spielid},{teilnehmerid},{runde},'{scoretyp}', 0)".format(turnierid=turnierid, spielid=spielid, teilnehmerid=teilnehmerid, runde=runde, scoretyp=scoretyp)
 	message = "Runde erfolgreich hinzugefügt."
 	return execute_query(query=query,message=message)
 
@@ -66,7 +66,7 @@ def delete_runde(turnierid, spielid, runde):
 	return execute_query(query=query,message=message)
 
 def add_game_to_turnier(turnierid, spielid, teilnehmerid):
-	query= "insert into turnierdetails(turnierid, spielid,teilnehmerid, runde, ergebnis, ergebnistyp) values ({turnierid},{spielid},{teilnehmerid},1,0,'kills');".format(turnierid=turnierid, spielid=spielid, teilnehmerid=teilnehmerid)
+	query= "insert into turnierdetails(turnierid, spielid,teilnehmerid, runde, score, scoretyp) values ({turnierid},{spielid},{teilnehmerid},1,0,'kills');".format(turnierid=turnierid, spielid=spielid, teilnehmerid=teilnehmerid)
 	message = "Spiel {spielname} mit Teilnehmer {teilnehmername} hinzugefügt.".format(spielname=get_spielname(spielid)[0][0], teilnehmername=get_teilnehmername(teilnehmerid)[0][0])
 	return execute_query(query=query,message=message)
 
@@ -95,8 +95,8 @@ def get_all_spiele():
 	query = 'select name, typ, maxspieler from spiel;'
 	return execute_select_query(query)
 
-def get_ergebnistyp(turnierid, spielid, runde):
-	query = 'select distinct(ergebnistyp) from turnierdetails where turnierid={turnierid} and spielid={spielid} and runde={runde};'.format(turnierid=turnierid, spielid=spielid, runde=runde)
+def get_scoretyp(turnierid, spielid, runde):
+	query = 'select distinct(scoretyp) from turnierdetails where turnierid={turnierid} and spielid={spielid} and runde={runde};'.format(turnierid=turnierid, spielid=spielid, runde=runde)
 	return execute_select_query(query)
 
 def get_spiel(name):
@@ -128,7 +128,7 @@ def get_teilnehmername(teilnehmerid):
 	return execute_select_query(query)
 
 def get_punkteliste(turnierid):
-	query = 'select spiel.name, teilnehmer.name, "Runde: " || td.runde, "Platz: " || td.ergebnis from turnierdetails as td inner join teilnehmer on td.teilnehmerid = teilnehmer.teilnehmerid inner join spiel on td.spielid = spiel.spielid where td.turnierid={turnierid};'.format(turnierid=turnierid)
+	query = 'select spiel.name, teilnehmer.name, "Runde: " || td.runde, "Platz: " || td.score from turnierdetails as td inner join teilnehmer on td.teilnehmerid = teilnehmer.teilnehmerid inner join spiel on td.spielid = spiel.spielid where td.turnierid={turnierid};'.format(turnierid=turnierid)
 	return execute_select_query(query)
 
 def get_spielliste_pro_turnier(turnierid):
@@ -141,9 +141,9 @@ def get_punkte_pro_spiel_pro_turnier(turnierid, spielid):
     runden = execute_select_query('SELECT DISTINCT(runde) FROM turnierdetails WHERE turnierid={turnierid} AND spielid={spielid};'.format(turnierid=turnierid, spielid=spielid))
 
     for runde in runden:
-        ergebnistyp = execute_select_query('SELECT DISTINCT(ergebnistyp) FROM turnierdetails WHERE turnierid={turnierid} AND spielid={spielid} AND runde={runde};'.format(turnierid=turnierid, spielid=spielid, runde=runde[0]))
+        scoretyp = execute_select_query('SELECT DISTINCT(scoretyp) FROM turnierdetails WHERE turnierid={turnierid} AND spielid={spielid} AND runde={runde};'.format(turnierid=turnierid, spielid=spielid, runde=runde[0]))
 
-        query = 'SELECT spiel.name, teilnehmer.nickname, td.ergebnistyp, td.runde, td.ergebnis FROM turnierdetails AS td INNER JOIN teilnehmer ON td.teilnehmerid = teilnehmer.teilnehmerid INNER JOIN spiel ON td.spielid = spiel.spielid WHERE td.turnierid={turnierid} AND td.spielid={spielid} AND td.runde={runde} ORDER BY td.runde, td.ergebnis;'.format(turnierid=turnierid, spielid=spielid, runde=runde[0])
+        query = 'SELECT spiel.name, teilnehmer.nickname, td.scoretyp, td.runde, td.score FROM turnierdetails AS td INNER JOIN teilnehmer ON td.teilnehmerid = teilnehmer.teilnehmerid INNER JOIN spiel ON td.spielid = spiel.spielid WHERE td.turnierid={turnierid} AND td.spielid={spielid} AND td.runde={runde} ORDER BY td.runde, td.score;'.format(turnierid=turnierid, spielid=spielid, runde=runde[0])
         gesamtergebnis.append(execute_select_query(query))
 
     return gesamtergebnis
@@ -151,11 +151,16 @@ def get_punkte_pro_spiel_pro_turnier(turnierid, spielid):
 def get_teilnehmerid_pro_turnier(turnierid):
 	query = 'select teilnehmer from turnier where turnierid={turnierid}'.format(turnierid=turnierid)
 	#query = 'select distinct(teilnehmerid) from turnierdetails where turnierid={turnierid};'.format(turnierid=turnierid)
-	teilnehmerstr = execute_select_query(query)
-	return teilnehmerstr[0][0].split()
+	teilnehmerstr = execute_select_query(query) #teilnehmerstr [(None,)]
+	#print("teilnehmerstr", teilnehmerstr)
+
+	if teilnehmerstr[0][0] is None:
+		return "None"
+	else:
+		return teilnehmerstr[0][0].split()
 
 def get_runden_pro_spiel_pro_turnier(turnierid, spielid):
-	query = 'select distinct(td.runde) from turnierdetails as td inner join teilnehmer on td.teilnehmerid = teilnehmer.teilnehmerid inner join spiel on td.spielid = spiel.spielid where td.turnierid={turnierid} and td.spielid={spielid} order by td.runde, td.ergebnis;'.format(turnierid=turnierid, spielid=spielid)
+	query = 'select distinct(td.runde) from turnierdetails as td inner join teilnehmer on td.teilnehmerid = teilnehmer.teilnehmerid inner join spiel on td.spielid = spiel.spielid where td.turnierid={turnierid} and td.spielid={spielid} order by td.runde, td.score;'.format(turnierid=turnierid, spielid=spielid)
 	return execute_select_query(query)
 
 def get_turniere_pro_spiel(spielid):

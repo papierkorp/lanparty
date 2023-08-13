@@ -27,7 +27,7 @@ class ErgebnisInputForm(FlaskForm):
     teilnehmer=StringField('Teilnehmer',validators=[DataRequired()], render_kw={"placeholder": "Teilnehmer", "readonly":"true"})
 
 class ErgebnisForm(FlaskForm):
-    ergebnistyp = SelectField('Ergebnistyp', validators=[DataRequired()], coerce=str)
+    scoretyp = SelectField('scoretyp', validators=[DataRequired()], coerce=str)
     ergebnislist=FieldList(FormField(ErgebnisInputForm))
     submit = SubmitField('Ergebnis abschicken')
     addround = SubmitField('Runde hinzufügen')

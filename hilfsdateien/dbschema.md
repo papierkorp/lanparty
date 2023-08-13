@@ -8,7 +8,7 @@ Tabelle spiel
 Felder: spielid (int), name (text), typ (text)(Dedicated Server, Ingame Server, LAN...), maxspieler (int)
 
 Tabelle turnierdetails
-Felder: turnierdetailsid (int), turnierid (turnierid), spielid (spielid), teilnehmerid (teilnehmerid), runde (int), ergebnistyp (text), ergebnis (int)
+Felder: turnierdetailsid (int), turnierid (turnierid), spielid (spielid), teilnehmerid (teilnehmerid), runde (int), scoretyp (text), ergebnis (int)
 
 
 #lanparty.db
@@ -32,5 +32,5 @@ Felder: turnierdetailsid (int), turnierid (turnierid), spielid (spielid), teilne
 #--spielid(int)
 #--teilnehmerid(int)
 #--runde(int)
-#--ergebnistyp(text)
+#--scoretyp(text)
 #--ergebnis(string)

@@ -1,7 +1,7 @@
 # havetodo
 - Turnier - Übersicht - xxx - Spiel - Turnierbaum erstellen
-- Turnierdetails - Punkteliste - Gesamtpunkteauswertung (Ergebnisberechnung): zwei spieler mit selbem ergebnis werden noch nicht berücksichtigt
-- Turnierdetails - Punkteliste - Gesamtpunkteauswertung (Ergebnisberechnung): "punkte" "pvp" usw... einbauen
+- Turnierdetails - punkteliste - Gesamtpunkteauswertung (Ergebnisberechnung): zwei spieler mit selbem ergebnis werden noch nicht berücksichtigt
+- Turnierdetails - punkteliste - Gesamtpunkteauswertung (Ergebnisberechnung): "punkte" "pvp" usw... einbauen
 
 # wanttodo
 
@@ -11,12 +11,12 @@
   - Variablen Namen / Funktionsnamen - auf englisch oder deutsch festlegen und kein mix
   - Logit aus routes.py rausnehmen?
 - Turnier
-  - Turnier - Übersicht - xxx -Punkteliste pro Spiel
+  - Turnier - Übersicht - xxx -punkteliste pro Spiel
   - Turnier - Übersicht - xxx - Platzierung
   - Turnier löschen
   - Turnier bearbeiten (Teilnehmer hinzu oder weg)
   - Turnier - neu - Spielauswahl hinzufügen?
-  - ergebnistyp wird mehrmals definiert
+  - scoretyp wird mehrmals definiert
   - Turnier - Übersicht: Rundenausgabe pro Spiel überarbeiten
   - Ergebnis als json/yaml übergeben
   - Turnier - Übersicht - xxx - Runde löschen, bei Ergebnisausgabe gibts noch nen Hack, wenn eine Runde in der Mitte gelöscht wird, sind maximal 5 Runden unterschied zulässig...

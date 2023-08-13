@@ -20,7 +20,7 @@
         {% set indexfrom1 = loop.index %}
 
             {% if loop.first %}
-                <p>{{form.ergebnistyp.label}} {{form.ergebnistyp(value=punkteliste[indexfrom0][2])}}</p>
+                <p>{{form.scoretyp.label}} {{form.scoretyp(value=punkteliste[indexfrom0][2])}}</p>
             {% endif %}
 
             {% if loop.first or ns.runde == punkteliste[indexfrom0][3] or ns.runde+1 == punkteliste[indexfrom0][3] or ns.runde+2 == punkteliste[indexfrom0][3] or ns.runde+3 == punkteliste[indexfrom0][3] or ns.runde+4 == punkteliste[indexfrom0][3] or ns.runde+5 == punkteliste[indexfrom0][3] %}
