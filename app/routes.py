@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request, jsonify
 from app import app
 from app.db.db import add_turnier, get_turniere_pro_spiel, get_turniere, get_scoretyp, get_runden_pro_spiel_pro_turnier, get_turniername, get_teilnehmerid_pro_turnier, get_punkte_pro_spiel_pro_turnier, get_spielliste_pro_turnier, get_punkteliste, get_teilnehmerid, add_teilnehmer, get_all_teilnehmer, delete_teilnehmer, add_spiel, get_all_spiele, delete_spiel, get_spiel, get_teilgenommene_turniere_pro_teilnehmer, edit_ergebnis, add_runde, delete_runde, get_last_round, get_spielid, add_game_to_turnier, delete_game_from_turnier, get_teilnehmername, execute_sql_file
 from app.logik.gruppenerstellung import Gruppenerstellung
-from app.logik.ergebnisberechnung import Ergebnisberechnung_gesamt
+from app.logik.ergebnisberechnung import Ergebnisberechnung_gesamt, evaluate_points
 import urllib.parse
 import sqlite3
 import os
@@ -34,8 +34,10 @@ def turnier(turnierid):
 	for i in spielliste_pro_turnier:
 		spielliste_to_delete.append(i[1])
 		punkteliste_pro_spiel.append(get_punkte_pro_spiel_pro_turnier(turnierid=turnierid, spielid=i[0]))
-	print("punkteliste_pro_spiel", punkteliste_pro_spiel)
-	punkteliste_bearbeitet = Ergebnisberechnung_gesamt(punkteliste_pro_spiel)
+	total_points = Ergebnisberechnung_gesamt(punkteliste_pro_spiel)
+
+	punkteliste_pro_spiel_mit_points = Ergebnisberechnung_gesamt(punkteliste_pro_spiel, returnType="perGame")
+
 
 	spielliste_to_add_db = get_all_spiele()
 	spielliste_to_add = []
@@ -66,7 +68,7 @@ def turnier(turnierid):
 
 
 
-	return render_template('tournament.html', title="Turnier", punktelisteturnier=punkteliste_bearbeitet, punktelistespiel=punkteliste_pro_spiel, spielliste=spielliste_pro_turnier, turnierid=turnierid, form=form, turniername=turniername)
+	return render_template('tournament.html', title="Turnier", total_points=total_points, punktelistespiel=punkteliste_pro_spiel_mit_points, spielliste=spielliste_pro_turnier, turnierid=turnierid, form=form, turniername=turniername)
 
 
 @app.route('/turnier/ergebnistabelle/<turnierid>/<spielname>', methods=['POST', 'GET'])

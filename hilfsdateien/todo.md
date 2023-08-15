@@ -1,7 +1,6 @@
 # havetodo
 - Turnier - Übersicht - xxx - Spiel - Turnierbaum erstellen
-- Turnierdetails - punkteliste - Gesamtpunkteauswertung (Ergebnisberechnung): zwei spieler mit selbem ergebnis werden noch nicht berücksichtigt
-- Turnierdetails - punkteliste - Gesamtpunkteauswertung (Ergebnisberechnung): "punkte" "pvp" usw... einbauen
+- Turnierdetails - punkteliste - Gesamtpunkteauswertung (Ergebnisberechnung): "pvp" einbauen
 
 # wanttodo
 
@@ -19,6 +18,7 @@
   - scoretyp wird mehrmals definiert
   - Turnier - Übersicht: Rundenausgabe pro Spiel überarbeiten
   - Ergebnis als json/yaml übergeben
+  - result page - points ausgabe hinzufügen
   - Turnier - Übersicht - xxx - Runde löschen, bei Ergebnisausgabe gibts noch nen Hack, wenn eine Runde in der Mitte gelöscht wird, sind maximal 5 Runden unterschied zulässig...
   - Turnier - Übersicht - xxx - Runde hinzufügen, evtl. statt letzte Runde + 1, raussuchen ob es leere Runden dazwischen gibt? (spricht eigt. gegen Integrität höhö)
 - Teilnehmer

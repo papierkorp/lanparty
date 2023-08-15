@@ -12,12 +12,13 @@
                 <th>Gesamtpunkte</th>
             </tr>
         </thead>
-    {% for element in punktelisteturnier %}
+    {{ punktelisteturnier }}
+    {% for player in total_points %}
         <tr>
-            <td>{{ element[0] }}</td>
-            <td>{{ element[1] }}</td>
+            <td>{{ player }}</td>
+            <td>{{ total_points[player] }}</td>
         </tr>
-    {% endfor %} 
+    {% endfor %}
     </table>
 
     <h2>Turnier bearbeiten</h2>
@@ -46,6 +47,7 @@
                         <th>Teilnehmer</th>
                         <th>Runde</th>
                         <th>{{spiel[0][0][2]|capitalize}}</th>
+                        <th>Punkte</th>
                     </tr>
                 </thead>
 
@@ -60,6 +62,7 @@
                             <td>{{spieler[1]}}</td>
                             <td>{{spieler[3]}}</td>
                             <td class="input_edit">{{spieler[4]}}</td>
+                            <td class="input_edit">{{spieler[5]}}</td>
                         </tr>
                     </tbody>
 
