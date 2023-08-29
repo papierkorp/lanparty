@@ -84,15 +84,12 @@ def ergebnis(turnierid, spielname):
 	punkteliste=[]
 	for runde in punkteliste_db:
 		punkteliste += runde #todo: sql statement ändern statt hier?
-	print("punkteliste", punkteliste)
 	anzahl_einträge = len(punkteliste)
 	anzahl_teilnehmer = len(punkteliste_db[0])
 
 #----------Gruppenerstellung, grad noch nicht relevant
 	maxspieler = spiel[0][3]
 	teilnehmerliste_id = get_teilnehmerid_pro_turnier(turnierid)
-	print("teilnehmerliste_id", teilnehmerliste_id)
-	print("turnierid", turnierid)
 	teilnehmerliste = []
 	for id in teilnehmerliste_id:
 		teilnehmerliste.append(get_teilnehmername(id)[0][0])
