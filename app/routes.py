@@ -1,21 +1,21 @@
-from flask import render_template, flash, redirect, url_for, request, jsonify
+from flask import render_template, flash, redirect, url_for, request
 from app import app
-from app.db.db import add_turnier, get_turniere_pro_spiel, get_turniere, get_scoretyp, get_runden_pro_spiel_pro_turnier, get_turniername, get_teilnehmerid_pro_turnier, get_punkte_pro_spiel_pro_turnier, get_spielliste_pro_turnier, get_punkteliste, get_teilnehmerid, add_teilnehmer, get_all_teilnehmer, delete_teilnehmer, add_spiel, get_all_spiele, delete_spiel, get_spiel, get_teilgenommene_turniere_pro_teilnehmer, edit_ergebnis, add_runde, delete_runde, get_last_round, get_spielid, add_game_to_turnier, delete_game_from_turnier, get_teilnehmername, execute_sql_file
+from app.db.db import add_turnier, get_turniere_pro_spiel, get_turniere, get_runden_pro_spiel_pro_turnier, get_turniername, get_teilnehmerid_pro_turnier, get_punkte_pro_spiel_pro_turnier, get_spielliste_pro_turnier, get_punkteliste, get_teilnehmerid, add_teilnehmer, get_all_teilnehmer, delete_teilnehmer, add_spiel, get_all_spiele, delete_spiel, get_spiel, get_teilgenommene_turniere_pro_teilnehmer, edit_ergebnis, add_runde, delete_runde, get_last_round, get_spielid, add_game_to_turnier, delete_game_from_turnier, get_teilnehmername, execute_sql_file
 from app.logik.gruppenerstellung import Gruppenerstellung
 from app.logik.ergebnisberechnung import Ergebnisberechnung_gesamt, evaluate_points
-import urllib.parse
-import sqlite3
 import os
 from app.forms import TeilnehmerNeuForm, DeleteForm, SpielNeuForm, TurnierNeuForm, ErgebnisForm, TurnierBearbeiten, Turnierbaum
 
 #encoded_name = urllib.parse.quote(name)
 
-#Ablauf
+
+# Ablauf
 # Neues Turnier
 ## 1) In DB neues Turnier mit ID + Name + Jahr
 ## 2) pro Teilnehmer pro Spiel: neue turnierbaum Verknüpfung mit TurnierID + TeilnehmerID + SpielID
 # Eintrag im Spieldetail vom Turnier
 ## 1) insert into verknüpfung where turnierid=, teilnehmerid=, spielid= values (rundennummer, platz)
+
 
 @app.route('/')
 @app.route('/index')
